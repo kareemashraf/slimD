@@ -14,10 +14,13 @@ class DefaultController extends Controller
     public function index()
     {
         $number = mt_rand(0, 100);
-
-        return new Response(
-            '<html><body>Lucky numberr: ' . $number . '</body></html>'
-        );
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+        $usr->getUsername();
+//var_dump($usr); die;
+        return $this->render('number.html.twig', array(
+            'number' => $number,
+            'user' => $usr,
+        ));
 
     }
 }

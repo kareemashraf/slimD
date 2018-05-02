@@ -45,6 +45,24 @@ class User implements AdvancedUserInterface, \Serializable
         // $this->salt = md5(uniqid('', true));
     }
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisActive()
+    {
+        return $this->isActive;
+    }
+
+
+
     public function getUsername()
     {
         return $this->username;

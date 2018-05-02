@@ -1,1 +1,7 @@
+<h1> Your ID is: {{ user.id }}</h1>
+<h1> Your name is: {{ user.username }}</h1>
+<h1> Your E-mail is: {{ user.email }}</h1>
+{% if( user.Isactive) %}
+    <h3>{{ user.Isactive }} : Active</h3>
+{% endif %}
 <h1>Your lucky number is {{ number }}</h1>

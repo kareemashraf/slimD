@@ -13,14 +13,59 @@ class DefaultController extends Controller
      */
     public function index()
     {
-        $number = mt_rand(0, 100);
         $usr= $this->get('security.token_storage')->getToken()->getUser();
-        $usr->getUsername();
-//var_dump($usr); die;
-        return $this->render('number.html.twig', array(
-            'number' => $number,
+
+        return $this->render('dashboard.html.twig', array(
             'user' => $usr,
         ));
 
     }
+
+
+    /**
+     * @Route("/profile")
+     */
+    public function profile()
+    {
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->render('profile.html.twig', array(
+            'user' => $usr,
+        ));
+
+    }
+
+
+    /**
+     * @Route("/emails")
+     */
+    public function emails()
+    {
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->render('emails.html.twig', array(
+            'user' => $usr,
+        ));
+
+    }
+
+
+    /**
+     * @Route("/terms-and-conditions")
+     */
+    public function terms_and_conditions()
+    {
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->render('terms-and-conditions.html.twig', array(
+            'user' => $usr,
+        ));
+
+    }
+
+
+
 }

@@ -34,11 +34,12 @@ class Emaillist
      */
     private $user_id;
 
-
     /**
      * @ORM\Column(type="string", length=250, unique=true)
+     * @Assert\NotBlank(message="Please, upload the Mailing list as a excel file.")
+     * @Assert\File(mimeTypes={"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/excel", "application/excel"}, mimeTypesMessage = "Please upload a valid excel file" )
      */
-    private $path;
+    private $file;
 
     /**
      * @Assert\DateTime()
@@ -99,18 +100,19 @@ class Emaillist
     /**
      * @return mixed
      */
-    public function getPath()
+    public function getFile()
     {
-        return $this->path;
+        return $this->file;
     }
 
     /**
-     * @param mixed $path
+     * @param mixed $file
      */
-    public function setPath($path)
+    public function setFile($file)
     {
-        $this->path = $path;
+        $this->file = $file;
     }
+
 
     /**
      * @return mixed

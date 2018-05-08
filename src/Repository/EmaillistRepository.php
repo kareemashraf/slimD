@@ -19,22 +19,23 @@ class EmaillistRepository extends ServiceEntityRepository
         parent::__construct($registry, Emaillist::class);
     }
 
-//    /**
-//     * @return Emaillist[] Returns an array of Emaillist objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Emaillist[] Returns an array of Emaillist objects
+     */
+
+    public function findByUserId($value)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->andWhere('e.user_id = :val')
+            ->andWhere('e.isActive = 1')
             ->setParameter('val', $value)
             ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
+//            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Emaillist

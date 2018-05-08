@@ -26,6 +26,21 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=64)
      */
+    private $fullname;
+
+    /**
+     * @ORM\Column(type="integer", length=15)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="text", length=254)
+     */
+    private $about;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
     private $password;
 
     /**
@@ -76,6 +91,38 @@ class User implements AdvancedUserInterface, \Serializable
         $this->username = $username;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFullname()
+    {
+        return $this->fullname;
+    }
+
+    /**
+     * @param mixed $fullname
+     */
+    public function setFullname($fullname)
+    {
+        $this->fullname = $fullname;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
 
     public function getSalt()
     {
@@ -116,6 +163,22 @@ class User implements AdvancedUserInterface, \Serializable
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAbout()
+    {
+        return $this->about;
+    }
+
+    /**
+     * @param mixed $about
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
     }
 
 

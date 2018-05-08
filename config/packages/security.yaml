@@ -1,7 +1,7 @@
 security:
     encoders:
         App\Entity\User:
-            algorithm: sha256
+            algorithm: md5
 
     # ...
 

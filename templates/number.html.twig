@@ -1,7 +1,8 @@
-<h1> Your ID is: {{ user.id }}</h1>
-<h1> Your name is: {{ user.username }}</h1>
-<h1> Your E-mail is: {{ user.email }}</h1>
-{% if( user.Isactive) %}
-    <h3>{{ user.Isactive }} : Active</h3>
-{% endif %}
-<h1>Your lucky number is {{ number }}</h1>
+{% block reusable_sidebar %}
+    <ul id="sidebarnav">
+        <li> <a class="waves-effect waves-dark" href="{{ asset('/') }}" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a></li>
+        <li> <a class="waves-effect waves-dark" href="{{ asset('/profile') }}" aria-expanded="false"><i class="mdi mdi-account-check"></i><span class="hide-menu">Profile</span></a></li>
+        <li> <a class="waves-effect waves-dark" href="{{ asset('/emails') }}" aria-expanded="false"><i class="mdi mdi-email-open"></i><span class="hide-menu">Emails</span></a></li>
+        <li> <a class="waves-effect waves-dark" href="{{ asset('/terms-and-conditions') }}" aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">terms and conditions</span></a></li>
+    </ul>
+{% endblock %}

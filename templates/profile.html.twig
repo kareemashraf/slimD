@@ -1,75 +1,6 @@
 {% extends 'base-dashboard.html.twig' %}
 
 {% block body %}
-<!-- ============================================================== -->
-<!-- Preloader - style you can find in spinners.css -->
-<!-- ============================================================== -->
-<div class="preloader">
-    <div class="loader">
-        <div class="loader__figure"></div>
-        <p class="loader__label">{{ user.username }}</p>
-    </div>
-</div>
-<!-- ============================================================== -->
-<!-- Main wrapper - style you can find in pages.scss -->
-<!-- ============================================================== -->
-<div id="main-wrapper">
-    <!-- ============================================================== -->
-    <!-- Topbar header - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <header class="topbar">
-        <nav class="navbar top-navbar navbar-expand-md navbar-light">
-            <!-- ============================================================== -->
-            <!-- Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
-                    <!-- Logo icon --><b>
-                        <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
-                    </b>
-                    <!--End Logo icon -->
-                    <!-- Logo text -->
-                    <span>
-                            <img src="../assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-                        </span>
-                </a>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-collapse">
-                <!-- ============================================================== -->
-                <!-- toggle and nav items -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav mr-auto">
-                    <!-- This is  -->
-                    <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
-                </ul>
-                <!-- ============================================================== -->
-                <!-- User profile and search -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav my-lg-0">
-                    <!-- ============================================================== -->
-                    <!-- Search -->
-                    <!-- ============================================================== -->
-                    <li class="nav-item hidden-xs-down search-box"> <a class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
-                        <form class="app-search">
-                            <input type="text" class="form-control" placeholder="Search & enter"> <a class="srh-btn"><i class="ti-close"></i></a>
-                        </form>
-                    </li>
-                    <!-- ============================================================== -->
-                    <!-- Profile -->
-                    <!-- ============================================================== -->
-                    <li class="nav-item">
-                        <a class="nav-link waves-effect waves-dark" href="#"><img src="../assets/images/users/1.jpg" alt="user" class="profile-pic" /></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <!-- ============================================================== -->
-    <!-- End Topbar header -->
-    <!-- ============================================================== -->
     <!-- ============================================================== -->
     <!-- Left Sidebar - style you can find in sidebar.scss  -->
     <!-- ============================================================== -->
@@ -121,9 +52,9 @@
                 <div class="col-lg-4 col-xlg-3 col-md-5">
                     <div class="card">
                         <div class="card-body">
-                            <center class="m-t-30"> <img src="../assets/images/users/5.jpg" class="img-circle" width="150" />
+                            <center class="m-t-30"> <img src="../assets/images/users/Rick2.gif" class="img-circle" width="150" />
                                 <h4 class="card-title m-t-10">{{ user.username }}</h4>
-                                <h6 class="card-subtitle">Accoubts Manager Amix corp</h6>
+                                <h6 class="card-subtitle">{{ user.about }}</h6>
                                 <div class="row text-center justify-content-md-center">
                                     <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-medium">254</font></a></div>
                                     <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-medium">54</font></a></div>
@@ -137,11 +68,11 @@
                 <div class="col-lg-8 col-xlg-9 col-md-7">
                     <div class="card">
                         <div class="card-body">
-                            <form class="form-horizontal form-material">
+                            <form class="form-horizontal form-material" method="post" action="profile">
                                 <div class="form-group">
                                     <label class="col-md-12">Full Name</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="Johnathan Doe" class="form-control form-control-line">
+                                        <input type="text" name="fullname" placeholder="full Name" class="form-control form-control-line" value="{{ user.fullname }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -153,36 +84,42 @@
                                 <div class="form-group">
                                     <label class="col-md-12">Password</label>
                                     <div class="col-md-12">
-                                        <input type="password" value="password" class="form-control form-control-line">
+                                        <input type="password" value="" name="password" id="password" class="form-control form-control-line">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">Re-Enter Password</label>
+                                    <div class="col-md-12">
+                                        <input type="password" value="" name="password2" id="password2" class="form-control form-control-line">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12">Phone No</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="123 456 7890" class="form-control form-control-line">
+                                        <input type="text" placeholder="123 456 7890" name="phone" class="form-control form-control-line" value="{{ user.phone }}" >
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">Message</label>
+                                    <label class="col-md-12">About</label>
                                     <div class="col-md-12">
-                                        <textarea rows="5" class="form-control form-control-line"></textarea>
+                                        <textarea rows="5" name="about" class="form-control form-control-line">{{ user.about }}</textarea>
                                     </div>
                                 </div>
+                                {#<div class="form-group">#}
+                                    {#<label class="col-sm-12">Select Country</label>#}
+                                    {#<div class="col-sm-12">#}
+                                        {#<select class="form-control form-control-line">#}
+                                            {#<option>London</option>#}
+                                            {#<option>India</option>#}
+                                            {#<option>Usa</option>#}
+                                            {#<option>Canada</option>#}
+                                            {#<option>Thailand</option>#}
+                                        {#</select>#}
+                                    {#</div>#}
+                                {#</div>#}
                                 <div class="form-group">
-                                    <label class="col-sm-12">Select Country</label>
                                     <div class="col-sm-12">
-                                        <select class="form-control form-control-line">
-                                            <option>London</option>
-                                            <option>India</option>
-                                            <option>Usa</option>
-                                            <option>Canada</option>
-                                            <option>Thailand</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <button class="btn btn-success">Update Profile</button>
+                                        <button id="profile_submit" class="btn btn-success">Update Profile</button>
                                     </div>
                                 </div>
                             </form>

@@ -2,9 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+
 
 
     <div class="limiter">
@@ -40,6 +38,11 @@
                             Login
                         </button>
                     </div>
+                    {% if error %}
+                      <center>
+                          <div style="color: red;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                      </center>
+                    {% endif %}
 
                     {#<div class="text-center p-t-12">#}
 						{#<span class="txt1">#}

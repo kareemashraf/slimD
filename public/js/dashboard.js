@@ -11,6 +11,34 @@ $('#profile_submit').click(function(){
     }
 });
 
+$('.delete').click(function(){
+    if (confirm('Are you sure you want to Delete the selected list  ?')) {
+        var id = $(this).attr("data-optionid");
+
+        $.ajax({
+            url:"/delete-list",
+            type: "POST",
+            data: {
+                "id": id
+            },
+            async: true,
+            success: function (data)
+            {
+                console.log(data);
+                // location.reload();  //reload the page
+                location.href='/emails';
+            },
+            error: function(xhr, textStatus, errorThrown){
+                console.log('request failed');
+            }
+        });
+
+
+    } else {
+        // Do nothing! :D
+    }
+});
+
 $(function () {
     "use strict";
     // ============================================================== 

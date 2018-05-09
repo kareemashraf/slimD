@@ -24,13 +24,14 @@ class Emaillist
     }
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=25)
      */
     private $list_name;
 
 
+    //TODO: ManyToOne relationship. in v 2.0
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=25)
      */
     private $user_id;
 

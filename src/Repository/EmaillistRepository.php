@@ -29,7 +29,7 @@ class EmaillistRepository extends ServiceEntityRepository
             ->andWhere('e.user_id = :val')
             ->andWhere('e.isActive = 1')
             ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
+            ->orderBy('e.data_added', 'DESC')
 //            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -37,15 +37,15 @@ class EmaillistRepository extends ServiceEntityRepository
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?Emaillist
+
+    public function findOneById($value): ?Emaillist
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->andWhere('e.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }

@@ -37,6 +37,7 @@
 <!-- ============================================================== -->
 <!-- Preloader - style you can find in spinners.css -->
 <!-- ============================================================== -->
+{% if user is defined %}
 <div class="preloader">
     <div class="loader">
         <div class="loader__figure"></div>
@@ -83,32 +84,31 @@
                 <!-- ============================================================== -->
                 <ul class="navbar-nav my-lg-0">
                     <!-- ============================================================== -->
-                    <!-- Search -->
+                    <!-- Search in header item -->
                     <!-- ============================================================== -->
-                    <li class="nav-item hidden-xs-down search-box"> <a class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
-                        <form class="app-search">
-                            <input type="text" class="form-control" placeholder="Search & enter"> <a class="srh-btn"><i class="ti-close"></i></a>
-                        </form>
-                    </li>
+                    {#<li class="nav-item hidden-xs-down "> <a class="nav-link hidden-sm-down waves-effect waves-dark" href=""><i class="ti-user"></i></a></li>#}
                     <!-- ============================================================== -->
                     <!-- Profile -->
                     <!-- ============================================================== -->
                     <li class="nav-item">
-                        <a class="nav-link waves-effect waves-dark" href="#"><img src="../assets/images/users/Rick2.gif" alt="user" class="profile-pic" /></a>
+                        <a href="/profile" class="nav-link waves-effect waves-dark" href="#"><img src="../assets/images/users/Rick2.gif" alt="user" class="profile-pic" /></a>
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
+    {% endif %}
 {% block body %}
 
     {% block reusable_sidebar %}
+    {% if user is defined %}
         <ul id="sidebarnav" style="">
             <li> <a class="waves-effect waves-dark" href="{{ asset('/') }}" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a></li>
             <li> <a class="waves-effect waves-dark" href="{{ asset('/profile') }}" aria-expanded="false"><i class="mdi mdi-account-check"></i><span class="hide-menu">Profile</span></a></li>
             <li> <a class="waves-effect waves-dark" href="{{ asset('/emails') }}" aria-expanded="false"><i class="mdi mdi-email-open"></i><span class="hide-menu">Emails</span></a></li>
             <li> <a class="waves-effect waves-dark" href="{{ asset('/terms-and-conditions') }}" aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">terms and conditions</span></a></li>
         </ul>
+    {% endif %}
     {% endblock %}
 
 {% endblock %}

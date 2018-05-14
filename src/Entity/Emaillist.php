@@ -35,10 +35,13 @@ class Emaillist
      */
     private $user_id;
 
+    //, mimeTypesMessage = "Please upload a valid CSV file"
+    //TODO: Determine either CSV, Excel or both! 
+
     /**
      * @ORM\Column(type="string", length=250, unique=true)
      * @Assert\NotBlank(message="Please, upload the Mailing list as a excel file.")
-     * @Assert\File(mimeTypes={"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/excel", "application/excel"}, mimeTypesMessage = "Please upload a valid excel file" )
+     * @Assert\File(mimeTypes={"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/excel", "application/excel", "text/plain",  "text/csv", "application/csv"})
      */
     private $file;
 

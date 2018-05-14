@@ -11,6 +11,7 @@ $('#profile_submit').click(function(){
     }
 });
 
+//Delete Button
 $('.delete').click(function(){
     if (confirm('Are you sure you want to Delete the selected list  ?')) {
         var id = $(this).attr("data-optionid");
@@ -25,8 +26,7 @@ $('.delete').click(function(){
             success: function (data)
             {
                 console.log(data);
-                // location.reload();  //reload the page
-                location.href='/emails';
+                location.href='/lists';
             },
             error: function(xhr, textStatus, errorThrown){
                 console.log('request failed');
@@ -38,6 +38,13 @@ $('.delete').click(function(){
         // Do nothing! :D
     }
 });
+
+//Send Button
+$('.send').click(function(){
+    var id = $(this).attr("data-optionid");
+    location.href='/emails/'+id;
+});
+
 
 $(function () {
     "use strict";

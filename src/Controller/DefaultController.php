@@ -92,15 +92,14 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/emails")
+     * @Route("/lists")
      */
-    public function emails(Request $request)
+    public function lists(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
 
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
-//var_dump($lists); die;
         $email_list = new Emaillist();
         $form = $this->createForm(ProductType::class, $email_list);
         $form->handleRequest($request);
@@ -113,7 +112,8 @@ class DefaultController extends Controller
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $email_list->getFile();
 
-            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+            $fileName = $this->generateUniqueFileName().'.csv';
+//$file->guessExtension();
 
             // moves the file to the directory where the CSV files are stored
             $file->move(
@@ -134,7 +134,7 @@ class DefaultController extends Controller
 
         $lists = $entityManager->getRepository(Emaillist::class)->findByUserId($usr->getId());
 
-        return $this->render('emails.html.twig', array(
+        return $this->render('lists.html.twig', array(
             'user' => $usr,
             'form' => $form->createView(),
             'lists' => $lists,
@@ -177,6 +177,29 @@ class DefaultController extends Controller
 
         }
         return new Response();
+    }
+
+    /**
+     * @Route("/emails/{id}")
+     */
+    public function emails($id = NULL){
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
+
+        if ($id ) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $list = $entityManager->getRepository(Emaillist::class)->findOneById($id);
+           if ($list && $list->getUserid() == $usr->getId()) {
+               return $this->render('emails.html.twig', array(
+                   'user' => $usr,
+                   'list' => $list,
+               ));
+           }
+        }
+            return $this->render('emails.html.twig', array(
+                'user' => $usr,
+            ));
+
     }
 
 

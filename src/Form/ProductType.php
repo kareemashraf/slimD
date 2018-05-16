@@ -17,7 +17,7 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('list_name', TextType::class, array('label' => 'List Name : '))
-            ->add('file', FileType::class, array('label' => 'List (CSV file)', 'attr' => array('class'   => 'btn btn-outline-secondary')))// ...
+            ->add('file', FileType::class, array('label' => 'List (CSV file)'))// ...
             ->add('save', SubmitType::class, array('label' => 'Save List'))
         ;
     }

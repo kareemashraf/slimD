@@ -10,6 +10,13 @@ use App\Entity\User;
 use App\Entity\Emaillist;
 use App\Form\ProductType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+
 
 class DefaultController extends Controller
 {
@@ -182,24 +189,73 @@ class DefaultController extends Controller
     /**
      * @Route("/emails/{id}")
      */
-    public function emails($id = NULL){
+    public function emails(Request $request, $id = NULL)
+    {
 
-        $usr= $this->get('security.token_storage')->getToken()->getUser();
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
+        $entityManager = $this->getDoctrine()->getManager();
+        $lists = $entityManager->getRepository(Emaillist::class)->findByUserId($usr->getId());
 
-        if ($id ) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $list = $entityManager->getRepository(Emaillist::class)->findOneById($id);
-           if ($list && $list->getUserid() == $usr->getId()) {
-               return $this->render('emails.html.twig', array(
-                   'user' => $usr,
-                   'list' => $list,
-               ));
-           }
+
+        $defaultData = array();
+        $form = $this->createFormBuilder($defaultData)
+            ->add('message_html', CKEditorType::class, [
+                'config' => array('toolbar' => 'full'),
+                'constraints' => array(
+                    new NotBlank(),
+                ),
+            ])
+            ->add('submit', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $params = array();
+            $data = $form->getData();
+
+            if ($request->request->get("email_list") && !empty($request->request->get("email_list"))) {
+                $list_id = $request->request->get("email_list");
+            }
+
+            $message_html = $data['message_html'];
+            $message_text = strip_tags($message_html);
+
+            $params['html'] = $message_html;
+            $params['text'] = $message_text;
+            $params['list_id']= $list_id;
+            $params['user'] = $usr;
+
+        $this->sendMail($params);
+
+
         }
-            return $this->render('emails.html.twig', array(
-                'user' => $usr,
-            ));
 
+
+        if ($id) {
+            $list = $entityManager->getRepository(Emaillist::class)->findOneById($id);
+            if ($list && $list->getUserid() == $usr->getId()) {
+                return $this->render('emails.html.twig', array(
+                    'user' => $usr,
+                    'list' => $list,
+                    'lists' => $lists,
+                    'form'=> $form->createView(),
+                ));
+            }
+        }
+        return $this->render('emails.html.twig', array(
+            'user' => $usr,
+            'lists' => $lists,
+            'form'=> $form->createView(),
+        ));
+
+    }
+
+
+    //here create the Logic behind loop and sending emails to lists , and notify the user
+    //TODO: extract into a separate controller  
+    private function sendMail($params){
+        var_dump($params); die;
     }
 
 

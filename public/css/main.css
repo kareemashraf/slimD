@@ -2,3 +2,12 @@
 #product div{
     margin:3%;
 }
+
+.error_message{
+    color: red;
+}
+
+.wysiwyg ul li {
+    color: red;
+    list-style-type: square;
+}

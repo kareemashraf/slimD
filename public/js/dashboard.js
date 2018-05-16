@@ -1,9 +1,4 @@
-/*
-Template Name: Admin Pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: js
-*/
+
 
 $('#profile_submit').click(function(){
     if ($('#password').val() != $('#password2').val() ){

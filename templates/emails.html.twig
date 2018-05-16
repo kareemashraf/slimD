@@ -9,7 +9,7 @@
         <div class="scroll-sidebar">
             <!-- Sidebar navigation-->
             <nav class="sidebar-nav">
-                    {{ block('reusable_sidebar') }}
+                {{ block('reusable_sidebar') }}
                 <div class="text-center m-t-30">
                     {#<a href="https://wrappixel.com/templates/adminpro/" class="btn waves-effect waves-light btn-info hidden-md-down"> Upgrade to Pro</a>#}
                 </div>
@@ -48,13 +48,51 @@
             <!-- ============================================================== -->
             <div class="row">
                 <div class="col-12">
+                    {{ form_start(form, {'class': 'myclass', 'action': '/emails', 'attr': {'class': 'needs-validation'}}) }}
+                    <h6 class="error_message"></h6>{{ form_errors(form) }}
                     <div class="card">
                         <div class="card-body">
-        {% if list is defined %}
-            {{ list.Listname }}
-        {% endif %}
+
+                                {% if (lists is defined) and (lists|length > 0) %}
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Select a List : </label>
+                                    <select name="email_list" class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+                                        <option value="">Select a List</option>
+                                {% for onelist in lists %}
+
+                                    <option value="{{ onelist.id }}"
+                                            {% if list is defined %}
+                                                {% if onelist.id == list.id %}
+                                                    selected
+                                                {% endif %}
+                                            {% endif %}
+                                    >{{ onelist.listname }}</option>
+
+                                {% endfor %}
+                            </select>
+
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-body wysiwyg">
+                            {{ form_row(form.message_html) }}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            {#{{ form_row(form.message, { 'label_attr': {'class': 'plaintextMessage'}}) }}#}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            {{ form_row(form.submit, { 'label': 'Send Email' ,'attr': {'class': 'btn btn-danger'} }) }}
+
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                {% else  %}
+                    <h1>You have no email lists yet! </h1>
+                    <code>TIP: <h6>Upload your email lists <a href="/lists">Here</a></h6></code>
+                {% endif %}
                 </div>
             </div>
             <!-- End PAge Content -->
@@ -76,7 +114,7 @@
     <!-- ============================================================== -->
     <!-- End Page wrapper  -->
     <!-- ============================================================== -->
-</div>
+    </div>
 
 
 {% endblock %}

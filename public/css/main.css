@@ -11,3 +11,7 @@
     color: red;
     list-style-type: square;
 }
+
+#product_list_name{
+    margin-left: 10px;
+}

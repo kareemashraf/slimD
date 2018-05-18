@@ -18,7 +18,8 @@
         <!-- This page CSS -->
         <!-- chartist CSS -->
         <link href="{{ asset('../assets/plugins/chartist-js/dist/chartist.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('../assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css') }}" rel="stylesheet">
+        <link href="{{ asset('../assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css') }}"
+              rel="stylesheet">
         <!--c3 CSS -->
         <link href="{{ asset('../assets/plugins/c3-master/c3.min.css') }}" rel="stylesheet">
         <!-- Custom CSS -->
@@ -29,6 +30,7 @@
         <link href="{{ asset('css/pages/dashboard.css') }}" rel="stylesheet">
         <!-- You can change the theme colors from here -->
         <link href="{{ asset('css/colors/default-dark.css') }}" id="theme" rel="stylesheet">
+        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
 
 
     {% endblock %}
@@ -59,12 +61,12 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="index.html">
                     <!-- Logo icon --><b>
-                        <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                        <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>
                     </b>
                     <!--End Logo icon -->
                     <!-- Logo text -->
                     <span>
-                            <img src="../assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                            <img src="../assets/images/logo-text.png" alt="homepage" class="dark-logo"/>
                         </span>
                 </a>
             </div>
@@ -77,7 +79,8 @@
                 <!-- ============================================================== -->
                 <ul class="navbar-nav mr-auto">
                     <!-- This is  -->
-                    <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                    <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark"
+                                            href="javascript:void(0)"><i class="ti-menu"></i></a></li>
                 </ul>
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
@@ -91,65 +94,70 @@
                     <!-- Profile -->
                     <!-- ============================================================== -->
                     <li class="nav-item">
-                        <a href="/profile" class="nav-link waves-effect waves-dark" href="#"><img src="../assets/images/users/Rick2.gif" alt="user" class="profile-pic" /></a>
+                        <a href="/profile" class="nav-link waves-effect waves-dark" href="#"><img
+                                    src="../assets/images/users/Rick2.gif" alt="user" class="profile-pic"/></a>
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
     {% endif %}
-{% block body %}
+    {% block body %}
 
-    {% block reusable_sidebar %}
-    {% if user is defined %}
-        <ul id="sidebarnav" style="">
-            <li> <a class="waves-effect waves-dark" href="{{ asset('/') }}" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a></li>
-            <li> <a class="waves-effect waves-dark" href="{{ asset('/profile') }}" aria-expanded="false"><i class="mdi mdi-account-check"></i><span class="hide-menu">Profile</span></a></li>
-            <li> <a class="waves-effect waves-dark" href="{{ asset('/lists') }}" aria-expanded="false"><i class="mdi mdi-database"></i><span class="hide-menu">Lists</span></a></li>
-            <li> <a class="waves-effect waves-dark" href="{{ asset('/emails') }}" aria-expanded="false"><i class="mdi mdi-email-open"></i><span class="hide-menu">Emails</span></a></li>
-            <li> <a class="waves-effect waves-dark" href="{{ asset('/terms-and-conditions') }}" aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">terms and conditions</span></a></li>
-        </ul>
-    {% endif %}
+        {% block reusable_sidebar %}
+            {% if user is defined %}
+                <ul id="sidebarnav" style="">
+                    <li><a class="waves-effect waves-dark" href="{{ asset('/') }}" aria-expanded="false"><i
+                                    class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a></li>
+                    <li><a class="waves-effect waves-dark" href="{{ asset('/profile') }}" aria-expanded="false"><i
+                                    class="mdi mdi-account-check"></i><span class="hide-menu">Profile</span></a></li>
+                    <li><a class="waves-effect waves-dark" href="{{ asset('/lists') }}" aria-expanded="false"><i
+                                    class="mdi mdi-database"></i><span class="hide-menu">Lists</span></a></li>
+                    <li><a class="waves-effect waves-dark" href="{{ asset('/emails') }}" aria-expanded="false"><i
+                                    class="mdi mdi-email-open"></i><span class="hide-menu">Emails</span></a></li>
+                    <li><a class="waves-effect waves-dark" href="{{ asset('/terms-and-conditions') }}"
+                           aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">terms and conditions</span></a>
+                    </li>
+                </ul>
+            {% endif %}
+        {% endblock %}
+
     {% endblock %}
 
-{% endblock %}
+    {% block javascripts %}
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="{{ asset('../assets/plugins/jquery/jquery.min.js') }}"></script>
+        <!-- Bootstrap popper Core JavaScript -->
+        <script src="{{ asset('../assets/plugins/bootstrap/js/popper.min.js') }}"></script>
+        <script src="{{ asset('../assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+        <!-- slimscrollbar scrollbar JavaScript -->
+        <script src="{{ asset('js/perfect-scrollbar.jquery.min.js') }}"></script>
+        <!--Wave Effects -->
+        <script src="{{ asset('js/perfect-scrollbar.jquery.min.js') }}"></script>
+        <!--Menu sidebar -->
+        <script src="{{ asset('js/sidebarmenu.js') }}"></script>
+        <!--Custom JavaScript -->
+        <script src="{{ asset('js/custom.min.js') }}"></script>
+        <!-- ============================================================== -->
+        <!-- This page plugins -->
+        <!-- ============================================================== -->
+        <script src="{{ asset('../assets/plugins/chartist-js/dist/chartist.min.js') }}"></script>
+        <script src="{{ asset('../assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js') }}"></script>
+        <!--c3 JavaScript -->
+        <script src="{{ asset('../assets/plugins/d3/d3.min.js') }}"></script>
+        <script src="{{ asset('../assets/plugins/c3-master/c3.min.js') }}"></script>
+        <!-- Chart JS -->
+        <script src="{{ asset('js/dashboard.js') }}"></script>
 
 
-
-{% block javascripts %}
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <script src="{{ asset('../assets/plugins/jquery/jquery.min.js') }}"></script>
-    <!-- Bootstrap popper Core JavaScript -->
-    <script src="{{ asset('../assets/plugins/bootstrap/js/popper.min.js') }}"></script>
-    <script src="{{ asset('../assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-    <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="{{ asset('js/perfect-scrollbar.jquery.min.js') }}"></script>
-    <!--Wave Effects -->
-    <script src="{{ asset('js/perfect-scrollbar.jquery.min.js') }}"></script>
-    <!--Menu sidebar -->
-    <script src="{{ asset('js/sidebarmenu.js') }}"></script>
-    <!--Custom JavaScript -->
-    <script src="{{ asset('js/custom.min.js') }}"></script>
-    <!-- ============================================================== -->
-    <!-- This page plugins -->
-    <!-- ============================================================== -->
-    <script src="{{ asset('../assets/plugins/chartist-js/dist/chartist.min.js') }}"></script>
-    <script src="{{ asset('../assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js') }}"></script>
-    <!--c3 JavaScript -->
-    <script src="{{ asset('../assets/plugins/d3/d3.min.js') }}"></script>
-    <script src="{{ asset('../assets/plugins/c3-master/c3.min.js') }}"></script>
-    <!-- Chart JS -->
-    <script src="{{ asset('js/dashboard.js') }}"></script>
-
-
-{% endblock %}
+    {% endblock %}
 </body>
 </html>
 

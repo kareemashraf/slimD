@@ -1,116 +1,121 @@
 {% extends 'base-dashboard.html.twig' %}
 
 {% block body %}
-
-        <!-- ============================================================== -->
-        <!-- Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <aside class="left-sidebar">
-            <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav">
-                    {{ block('reusable_sidebar') }}
-                    <div class="text-center m-t-30">
-                        {#<a href="https://wrappixel.com/templates/adminpro/" class="btn waves-effect waves-light btn-info hidden-md-down"> Upgrade to Pro</a>#}
-                    </div>
-                </nav>
-                <!-- End Sidebar navigation -->
-            </div>
-            <!-- End Sidebar scroll-->
-        </aside>
-        <!-- ============================================================== -->
-        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Page wrapper  -->
-        <!-- ============================================================== -->
-        <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
-                <div class="row page-titles">
-                    <div class="col-md-5 align-self-center">
-                        <h3 class="text-themecolor">Control your Email Lists.</h3>
-                    </div>
-                    <div class="col-md-7 align-self-center">
-                        {#<a href="https://wrappixel.com/templates/adminpro/" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down"> Upgrade to Pro</a>#}
-                    </div>
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                {{ block('reusable_sidebar') }}
+                <div class="text-center m-t-30">
+                    {#<a href="https://wrappixel.com/templates/adminpro/" class="btn waves-effect waves-light btn-info hidden-md-down"> Upgrade to Pro</a>#}
                 </div>
-                <!-- ============================================================== -->
-                <!-- End Bread crumb and right sidebar toggle -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Send Emails and make Money! </h3>
+                </div>
+                <div class="col-md-7 align-self-center">
+                    {#<a href="https://wrappixel.com/templates/adminpro/" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down"> Upgrade to Pro</a>#}
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-12">
+                    {{ form_start(form, {'class': 'myclass', 'action': '/emails', 'attr': {'class': 'needs-validation'}}) }}
+                    <h6 class="error_message"></h6>{{ form_errors(form) }}
+                    <div class="card">
+                        <div class="card-body">
 
-                <div class="row">
-                    <!-- column -->
-                    <div class="col-lg-12">
-                        <div class="card">
+                                {% if (lists is defined) and (lists|length > 0) %}
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Select a List : </label>
+                                    <select name="email_list" class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+                                        <option value="">Select a List</option>
+                                {% for onelist in lists %}
 
-                            <div class="card-body">
-                                <h3>Add a new List</h3>
-                                {{ form_start(form) }}
-                                {{ form_widget(form) }}
-                                {{ form_end(form) }}
-                                <h4 class="card-title">Mailing Lists : </h4>
-                                <div class="table-responsive">
-                                    {% if lists is empty %}
-                                        <h2 class="text-themecolor" >You Dont have any Mailing Lists yet.</h2>
-                                        <h6 class="card-subtitle"><code>Tip:</code> No Worries, you can upload your list of emails in a csv or excel formats at any time ;)</h6>
-                                    {% else %}
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>List Name</th>
-                                            <th>Date added</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                                {% for onelist in lists %}
-                                                <tr>
-                                                    <td>{{ loop.index }}</td>
-                                                    <td>{{ onelist.getListName() }}</td>
-                                                    <td>{{ onelist.getDataAdded().date|date("Y/m/d H:m") }}</td>
-                                                    <td><button type="button" data-toggle="tooltip" data-placement="top" title="Delete list" class="delete btn btn-outline-danger" data-optionid="{{ onelist.id }}" ><i class="mdi mdi-delete"></i></button>  <button type="button" data-toggle="tooltip" data-placement="top" title="Send email to list" class="send btn btn-outline-success"  data-optionid="{{ onelist.id }}"><i class="mdi mdi-send"></i></button></td>
-                                                </tr>
-                                                {% endfor %}
-                                        </tbody>
-                                    </table>
+                                    <option value="{{ onelist.id }}"
+                                            {% if list is defined %}
+                                                {% if onelist.id == list.id %}
+                                                    selected
+                                                {% endif %}
+                                            {% endif %}
+                                    >{{ onelist.listname }}</option>
 
-                                    {% endif %}
-                                </div>
-                            </div>
+                                {% endfor %}
+                            </select>
+
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-body wysiwyg">
+                            {{ form_row(form.message_html) }}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            {#{{ form_row(form.message, { 'label_attr': {'class': 'plaintextMessage'}}) }}#}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            {{ form_row(form.submit, { 'label': 'Send Email' ,'attr': {'class': 'btn btn-danger'} }) }}
+
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                {% else  %}
+                    <h1>You have no email lists yet! </h1>
+                    <code>TIP: <h6>Upload your email lists <a href="/lists">Here</a></h6></code>
+                {% endif %}
                 </div>
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
             </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer">
-                © 2018 all rights reserved.
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
+            <!-- End PAge Content -->
             <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer">
+            Made with <i class="em em-hearts"></i> in  <i class="em em-flag-nl"></i>
+            © 2018 all rights reserved.
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
         <!-- ============================================================== -->
     </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    </div>
+
 
 {% endblock %}

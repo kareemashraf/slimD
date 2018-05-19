@@ -34,7 +34,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $phone;
 
     /**
-     * @ORM\Column(type="text", length=254)
+     * @ORM\Column(type="text", length=254, nullable=true)
      */
     private $about;
 

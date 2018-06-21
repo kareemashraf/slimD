@@ -15,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use League\Csv\Reader;
 
 
 ini_set('max_execution_time', 300); //300 seconds = 5 minutes
@@ -141,27 +140,31 @@ class DefaultController extends Controller
             $entityManager->flush();
 
 
-//            //load the CSV document from a file path
-//            $csv = Reader::createFromPath( $this->getParameter('email_directory').'/'.$fileName, 'r');
-//            $csv->setHeaderOffset(0);
-//
-//            $header = $csv->getHeader(); //returns the CSV header record
-//            $records = $csv->getRecords(); //returns all the CSV records as an Iterator object
-//
-//            echo $csv->getContent(); //returns the CSV document as a string
-//            die;
-//            $file = fopen( $this->getParameter('email_directory').'/'.$fileName,"r");
-
             $row = 1;
+            $emails = array();
+            $gender = array();
+            $name = array();
             if (($handle = fopen( $this->getParameter('email_directory').'/'.$fileName,"r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1, ",")) !== FALSE) {
                     $num = count($data);
-                    echo "<p> $num fields in line $row: <br /></p>\n";
                     $row++;
                     for ($c=0; $c < $num; $c++) {
-                        echo $data[$c] . "<br />\n";
+                        if ($c%3 ==0 ){
+                            $emails[] = $data[$c];
+                        }
+                        if ($c%2 == 0 && $c%3 !=0 ){
+                            $gender[] = $data[$c];
+                        }
+                        if ($c%2 != 0 && $c%3 !=0 ){
+                            $name[] = $data[$c];
+                        }
+//                        echo $data[$c] . "<br />\n";
                     }
                 }
+
+                var_dump($emails);
+                var_dump($gender);
+                var_dump($name);
                 fclose($handle); die;
             }
         }

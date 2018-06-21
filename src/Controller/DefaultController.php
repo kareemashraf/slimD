@@ -15,11 +15,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use League\Csv\Reader;
 
 
+ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 
 class DefaultController extends Controller
 {
+
     // ...
     private $encoder;
 
@@ -137,6 +140,30 @@ class DefaultController extends Controller
             $entityManager->persist($email_list);
             $entityManager->flush();
 
+
+//            //load the CSV document from a file path
+//            $csv = Reader::createFromPath( $this->getParameter('email_directory').'/'.$fileName, 'r');
+//            $csv->setHeaderOffset(0);
+//
+//            $header = $csv->getHeader(); //returns the CSV header record
+//            $records = $csv->getRecords(); //returns all the CSV records as an Iterator object
+//
+//            echo $csv->getContent(); //returns the CSV document as a string
+//            die;
+//            $file = fopen( $this->getParameter('email_directory').'/'.$fileName,"r");
+
+            $row = 1;
+            if (($handle = fopen( $this->getParameter('email_directory').'/'.$fileName,"r")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1, ",")) !== FALSE) {
+                    $num = count($data);
+                    echo "<p> $num fields in line $row: <br /></p>\n";
+                    $row++;
+                    for ($c=0; $c < $num; $c++) {
+                        echo $data[$c] . "<br />\n";
+                    }
+                }
+                fclose($handle); die;
+            }
         }
 
         $lists = $entityManager->getRepository(Emaillist::class)->findByUserId($usr->getId());
@@ -226,7 +253,7 @@ class DefaultController extends Controller
             $params['list_id']= $list_id;
             $params['user'] = $usr;
 
-        $this->sendMail($params);
+            EmailController::send($params);
 
 
         }
@@ -252,11 +279,6 @@ class DefaultController extends Controller
     }
 
 
-    //here create the Logic behind loop and sending emails to lists , and notify the user
-    //TODO: extract into a separate controller  
-    private function sendMail($params){
-        var_dump($params); die;
-    }
 
 
     /**

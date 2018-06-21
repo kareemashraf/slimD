@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
+use Doctrine\ORM\Mapping\Index;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,14 +25,14 @@ class Emaillist
     }
 
     /**
-     * @ORM\Column(type="string", length=25)
+     * @ORM\Column(type="string", length=30)
      */
     private $list_name;
 
 
     //TODO: ManyToOne relationship. in v 2.0
     /**
-     * @ORM\Column(type="string", length=25)
+     * @ORM\Column(type="string", length=5)
      */
     private $user_id;
 

@@ -19,11 +19,6 @@ class Emaillist
      */
     private $id;
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
     /**
      * @ORM\Column(type="string", length=30)
      */
@@ -42,7 +37,7 @@ class Emaillist
     /**
      * @ORM\Column(type="string", length=250, unique=true)
      * @Assert\NotBlank(message="Please, upload the Mailing list as a excel file.")
-     * @Assert\File(mimeTypes={"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/excel", "application/excel", "text/plain",  "text/csv", "application/csv"})
+     * @Assert\File(mimeTypes={"text/plain",  "text/csv", "application/csv"})
      */
     private $file;
 
@@ -62,6 +57,11 @@ class Emaillist
     {
         $this->isActive = true;
         $this->data_added = new \DateTime();
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
 

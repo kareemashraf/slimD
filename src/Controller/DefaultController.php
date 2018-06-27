@@ -1,5 +1,5 @@
 <?php
-// src/Controller/LuckyController.php
+
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -8,16 +8,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\User;
 use App\Entity\Emaillist;
+use App\Entity\Leads;
 use App\Form\ProductType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+//ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 
 class DefaultController extends Controller
 {
@@ -138,14 +139,14 @@ class DefaultController extends Controller
             $email_list->setFile($fileName);
             $entityManager->persist($email_list);
             $entityManager->flush();
-
+            $lastId = $email_list->getId();
 
             $row = 1;
             $emails = array();
             $gender = array();
             $name = array();
-            if (($handle = fopen( $this->getParameter('email_directory').'/'.$fileName,"r")) !== FALSE) {
-                while (($data = fgetcsv($handle, 1, ",")) !== FALSE) {
+            if (($handle = fopen($this->getParameter('email_directory').'/'.$fileName , "r")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     $num = count($data);
                     $row++;
                     for ($c=0; $c < $num; $c++) {
@@ -158,15 +159,28 @@ class DefaultController extends Controller
                         if ($c%2 != 0 && $c%3 !=0 ){
                             $name[] = $data[$c];
                         }
-//                        echo $data[$c] . "<br />\n";
                     }
                 }
-
-                var_dump($emails);
-                var_dump($gender);
-                var_dump($name);
-                fclose($handle); die;
+                fclose($handle);
             }
+
+//            var_dump($emails); var_dump($gender); var_dump($name); die;  //debug mode
+
+
+            foreach ($emails as $key => $email){
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $leads = new Leads();
+                        $leads->setEmail($email);
+                        $leads->setListId($lastId);
+                        $leads->setName($name[$key]);
+                        $leads->setGender($gender[$key]);
+
+                        $entityManager->persist($leads);
+                        $entityManager->flush();
+                }
+            }
+
+
         }
 
         $lists = $entityManager->getRepository(Emaillist::class)->findByUserId($usr->getId());
@@ -229,6 +243,14 @@ class DefaultController extends Controller
 
         $defaultData = array();
         $form = $this->createFormBuilder($defaultData)
+            ->add('from', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'width: 70%;', 'placeholder' => 'name@example.com'], // for input
+                'label_attr' => ['class' => 'col-sm-2 col-form-label col-form-label-sm'], // for label
+            ])
+            ->add('subject', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'width: 70%;'], // for input
+                'label_attr' => ['class' => 'col-sm-2 col-form-label col-form-label-sm'], // for label
+            ])
             ->add('message_html', CKEditorType::class, [
                 'config' => array('toolbar' => 'full'),
                 'constraints' => array(
@@ -250,14 +272,19 @@ class DefaultController extends Controller
 
             $message_html = $data['message_html'];
             $message_text = strip_tags($message_html);
+            $message_from = $data['from'];
+            $message_subject = $data['subject'];
 
             $params['html'] = $message_html;
             $params['text'] = $message_text;
+            $params['from'] = $message_from;
+            $params['subject'] = $message_subject;
             $params['list_id']= $list_id;
             $params['user'] = $usr;
 
-            EmailController::send($params);
-
+            $client = new EmailController();
+            $client->setContainer($this->container);
+            $client->send($params);
 
         }
 

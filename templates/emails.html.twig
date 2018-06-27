@@ -54,7 +54,7 @@
                         <div class="card-body">
 
                                 {% if (lists is defined) and (lists|length > 0) %}
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Select a List : </label>
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">To : </label>
                                     <select name="email_list" class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
                                         <option value="">Select a List</option>
                                 {% for onelist in lists %}
@@ -72,16 +72,25 @@
 
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            {{ form_row(form.from) }}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            {{ form_row(form.subject) }}
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="card-body wysiwyg">
                             {{ form_row(form.message_html) }}
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            {#{{ form_row(form.message, { 'label_attr': {'class': 'plaintextMessage'}}) }}#}
-                        </div>
-                    </div>
+
                     <div class="card">
                         <div class="card-body">
                             {{ form_row(form.submit, { 'label': 'Send Email' ,'attr': {'class': 'btn btn-danger'} }) }}

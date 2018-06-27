@@ -42,6 +42,11 @@ class Leads
      */
     private $sent;
 
+    public function __construct()
+    {
+        $this->sent = false;
+    }
+
     public function getId()
     {
         return $this->id;

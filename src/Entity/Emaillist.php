@@ -37,7 +37,9 @@ class Emaillist
     /**
      * @ORM\Column(type="string", length=250, unique=true)
      * @Assert\NotBlank(message="Please, upload the Mailing list as a excel file.")
-     * @Assert\File(mimeTypes={"text/plain",  "text/csv", "application/csv"})
+     * @Assert\File(mimeTypes={"text/plain",  "text/csv", "application/csv"},
+     *     mimeTypesMessage = "Please upload a valid CSV"
+     * )
      */
     private $file;
 

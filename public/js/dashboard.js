@@ -1,4 +1,14 @@
+$('.custom-file-input').on('change',function(){
+    //get the file name
+    var fileName = $(this).val();
+    fileName= fileName.replace("C:\\fakepath\\", ""); //Remove the C:/fakepath/
+    //replace the "Choose a file" label
+    $('.custom-file-control').html(fileName);
+});
 
+$('.send-email-button').append('  <i class="mdi mdi-send"></i>'); //add the send icon to the button
+
+$('.add-custom-file-control-after').append('<span class="custom-file-control"></span>');
 
 $('#profile_submit').click(function(){
     if ($('#password').val() != $('#password2').val() ){

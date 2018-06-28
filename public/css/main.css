@@ -15,3 +15,14 @@
 #product_list_name{
     margin-left: 10px;
 }
+
+.custom-file-input-css{
+    margin: 1%;
+    padding: 1%;
+    padding-left: 0;
+}
+
+.custom-file ul{
+    margin-top: 2%;
+    color: red;
+}

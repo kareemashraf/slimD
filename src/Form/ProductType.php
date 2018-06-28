@@ -16,9 +16,17 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('list_name', TextType::class, array('label' => 'List Name : '))
-            ->add('file', FileType::class, array('label' => 'List (CSV file)'))// ...
-            ->add('save', SubmitType::class, array('label' => 'Save List'))
+            ->add('list_name', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'width: 70%;'], // for input
+                'label_attr' => ['class' => ' col-form-label col-form-label-sm'], // for label
+
+            ])
+            ->add('file', FileType::class, [
+                'attr' => ['class' => 'custom-file-input', 'id'=>'inputGroupFile02'],  // for input
+            ] )// ...
+            ->add('save', SubmitType::class, ['label' => 'Save List',
+                'attr' => ['class' => 'btn btn-success'],
+                ])
         ;
     }
 

@@ -19,22 +19,22 @@ class HistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, History::class);
     }
 
-//    /**
-//     * @return History[] Returns an array of History objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return History[] Returns an array of History objects
+     */
+
+    public function findOneByActive()
     {
         return $this->createQueryBuilder('h')
-            ->andWhere('h.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('h.isActive = :val')
+            ->setParameter('val', 1)
             ->orderBy('h.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?History

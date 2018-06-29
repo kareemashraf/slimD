@@ -19,22 +19,34 @@ class LeadsRepository extends ServiceEntityRepository
         parent::__construct($registry, Leads::class);
     }
 
-//    /**
-//     * @return Leads[] Returns an array of Leads objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Leads[] Returns an array of Leads objects
+     */
+
+    public function findByListIdnotSent($value)
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
+            ->andWhere('l.list_id = :val')
+            ->andWhere('l.sent = 0')
             ->setParameter('val', $value)
             ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(4) // for Cronjob max 500 leads per hour
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    public function findByListIdAll($value)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.list_id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Leads

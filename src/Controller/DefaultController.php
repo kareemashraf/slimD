@@ -284,8 +284,9 @@ class DefaultController extends Controller
 
             $client = new EmailController();
             $client->setContainer($this->container);
-            $client->send($params);
+            $client->history($params);
 
+            return $this->redirectToRoute('app_default_index');
         }
 
 

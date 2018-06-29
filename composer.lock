@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "36774de50b88aac30315e75fef0927c8",
+    "content-hash": "28771cf58c223a0eb32a187f42ff6b41",
     "packages": [
         {
             "name": "doctrine/annotations",

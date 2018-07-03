@@ -8,10 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\History;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManager;
-
+use Swift_SmtpTransport;
+use Swift_Mailer;
+use Swift_Message;
 
 class EmailController extends Controller
 {
+
 
 
     public function history($params)
@@ -43,7 +46,7 @@ class EmailController extends Controller
         $activelists = $entityManager->getRepository(History::class)->findOneByActive();
 
         foreach ($activelists as $key => $list){
-//            var_dump($list);
+
             $listId = $list->getListId();
             $leads = $entityManager->getRepository(Leads::class)->findByListIdAll($listId);
             $sent_leads = $entityManager->getRepository(Leads::class)->findByListIdnotSent($listId);
@@ -63,18 +66,24 @@ class EmailController extends Controller
                     $message_html = str_replace($old_message, $new_message, $list->getMessagehtml());
                     $message_text = strip_tags($message_html);
 
-//                    echo "========= " . $key2 . " ==============</br>";
-//                    echo "from: " . $from . "</br>";
-//                    echo "subject: " . $subject . "</br> ";
-//                    echo $email . "</br> ";
-//                    echo $name . " </br>";
-//                    echo $gender . "</br>";
-//                    echo "message: " . $message_text . "</br>";
 
                     //send email here
 
+                    $transport = (new Swift_SmtpTransport('email-smtp.eu-west-1.amazonaws.com', 25, 'tls'))
+                        ->setUsername('')
+                        ->setPassword('')
+                    ;
+                    $mailer = new Swift_Mailer($transport);
 
+                    $message = (new Swift_Message($subject))
+                        ->setFrom(array($from => 'Kareem is Testing it'))
+                        ->setTo($email)
+                        ->setBody($message_text)
+                        ->addPart($message_html, 'text/html')
 
+                    ;
+                    $mailer->getTransport()->setSourceIp('8.8.8.8'); // dedecated IP here
+                    $mailer->send($message);
 
                     //end send email
 
@@ -84,7 +93,7 @@ class EmailController extends Controller
 
                 }
 
-
+                // maybe update here instead ?
             }
 
             if (empty($sent_leads)){
@@ -95,38 +104,16 @@ class EmailController extends Controller
                     $entityManager->persist($list);
                     $entityManager->flush();
                 }
-
             }
 
 
 
         }
-//        $this->send_smtp(\Swift_Mailer );
-//        die('now what ?');
+
+
 
     }
 
 
-    public function send_smtp(\Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('send@example.com')
-            ->setTo('kareem.ashraf.91@gmail.com')
-            ->setBody('test email content')
-            /*
-             * If you also want to include a plaintext version of the message
-            ->addPart(
-                $this->renderView(
-                    'emails/registration.txt.twig',
-                    array('name' => $name)
-                ),
-                'text/plain'
-            )
-            */
-        ;
-
-        $mailer->send($message);
-
-    }
 
 }

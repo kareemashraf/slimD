@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\History;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,8 +40,14 @@ class DefaultController extends Controller
     {
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
+        $entityManager = $this->getDoctrine()->getManager();
+        $lists   = $entityManager->getRepository(Emaillist::class)->findByUserId($usr->getId());
+        $history = $entityManager->getRepository(History::class)->findByUserId($usr->getId());
+
         return $this->render('dashboard.html.twig', array(
             'user' => $usr,
+            'lists' => $lists,
+            'orders' =>$history,
         ));
 
     }
@@ -286,7 +293,7 @@ class DefaultController extends Controller
             $client->setContainer($this->container);
             $client->history($params);
 
-            return $this->redirectToRoute('app_default_index');
+            return $this->redirectToRoute('app_default_index'); // return to homepage
         }
 
 

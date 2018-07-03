@@ -32,22 +32,22 @@ class History
     private $list_id;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="text", length=100)
      */
     private $fromtext;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="text", length=100)
      */
     private $subjecttext;
 
     /**
-     * @ORM\Column(type="text", length=30)
+     * @ORM\Column(type="text")
      */
     private $message_html;
 
     /**
-     * @ORM\Column(type="text", length=30)
+     * @ORM\Column(type="text")
      */
     private $message_plaintext;
 

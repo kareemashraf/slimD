@@ -102,53 +102,41 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div>
-                                    <h4 class="card-title"><span class="lstick"></span>Projects of the Month</h4></div>
+                                    <h4 class="card-title"><span class="lstick"></span>Sent this Month!</h4></div>
                             </div>
                             <div class="table-responsive m-t-20">
                                 <table class="table vm no-th-brd no-wrap pro-of-month">
                                     <thead>
                                     <tr>
-                                        <th colspan="2">Assigned</th>
-                                        <th>Name</th>
-                                        <th>Priority</th>
+                                        <th colspan="2">Order</th>
+                                        <th>List</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td style="width:50px;"><span class="round"><img src="../assets/images/users/1.gif" alt="user" width="50"></span></td>
-                                        <td>
-                                            <h6>Sunil Joshi</h6><small class="text-muted">Web Designer</small></td>
-                                        <td>Elite Admin</td>
-                                        <td>Low</td>
-                                    </tr>
-                                    <tr class="active">
-                                        <td><span class="round"><img src="../assets/images/users/2.jpg" alt="user" width="50"></span></td>
-                                        <td>
-                                            <h6>Andrew</h6><small class="text-muted">Project Manager</small></td>
-                                        <td>Real Homes</td>
-                                        <td>Medium</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-success"><img src="../assets/images/users/3.jpg" alt="user" width="50"></span></td>
-                                        <td>
-                                            <h6>Bhavesh patel</h6><small class="text-muted">Developer</small></td>
-                                        <td>MedicalPro Theme</td>
-                                        <td>High</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-primary"><img src="../assets/images/users/4.jpg" alt="user" width="50"></span></td>
-                                        <td>
-                                            <h6>Nirav Joshi</h6><small class="text-muted">Frontend Eng</small></td>
-                                        <td>Elite Admin</td>
-                                        <td>Low</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-warning"><img src="../assets/images/users/5.jpg" alt="user" width="50"></span></td>
-                                        <td>
-                                            <h6>Micheal Doe</h6><small class="text-muted">Content Writer</small></td>
-                                        <td>Helping Hands</td>
-                                        <td>High</td>
-                                    </tr>
+                                    {% if orders is empty %}
+                                        <tr>
+                                            <td style="width:50px;"><span class="round">{{ loop.index }}</span> <span class="profile-status away pull-right"></span></td>
+                                            <td>
+                                                <h6>No History Available this month.</h6><small class="text-muted">You haven't sent any emails this months yet </small></td>
+                                            <td><code>Tip:</code></td>
+                                            <td><a href="/lists">Start</a></td>
+                                        </tr>
+                                     {% else %}
+                                         {% for order in orders %}
+                                            <tr>
+                                                <td style="width:50px;"><span class="round">{{ loop.index }}</span> <span class="profile-status away pull-right"></span></td>
+                                                <td>
+                                                    <h6>{{ order.subjecttext }}</h6><small class="text-muted">{{ order.getOrderDate().date|date("Y/m/d H:m") }}</small></td>
+                                                <td><a href="/emails/{{ order.getListid() }}"> {{ order.getListid() }}</a></td>
+                                                {% if (order.getisActive() == 1) %}
+                                                    <td style="color: red"><b>Running</b> <img class="small" src="../assets/images/loading.gif" alt="Loading" style="width: 20%;"> </td>
+                                                {% else %}
+                                                    <td style="color: green"><b>Done</b></td>
+                                                {% endif %}
+                                            </tr>
+                                         {% endfor %}
+                                      {% endif %}
                                     </tbody>
                                 </table>
                             </div>
@@ -160,46 +148,29 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex">
-                                <h4 class="card-title"><span class="lstick"></span>My Contact</h4>
+                                <h4 class="card-title"><span class="lstick"></span>My Lists</h4>
                             </div>
                             <div class="message-box contact-box">
                                 <div class="message-widget contact-widget">
                                     <!-- Message -->
-                                    <a href="#">
-                                        <div class="user-img"> <img src="../assets/images/users/1.gif" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
-                                        <div class="mail-contnet">
-                                            <h5>Pavan kumar</h5> <span class="mail-desc">info@wrappixel.com</span></div>
-                                    </a>
                                     <!-- Message -->
-                                    <a href="#">
-                                        <div class="user-img"> <img src="../assets/images/users/2.jpg" alt="user" class="img-circle"> <span class="profile-status busy pull-right"></span> </div>
-                                        <div class="mail-contnet">
-                                            <h5>Sonu Nigam</h5> <span class="mail-desc">pamela1987@gmail.com</span></div>
-                                    </a>
+                                    {% if lists is empty %}
+                                        <a href="/lists">
+                                            <div class="user-img"> <span class="round">NO</span> <span class="profile-status away pull-right"></span> </div>
+                                            <div class="mail-contnet">
+                                                <h5>No Lists Available</h5> <span class="mail-desc">you have no Email lists yet.</span></div>
+                                        </a>
+                                     {% else %}
+                                         {% for onelist in lists %}
+                                             <a href="/emails/{{ onelist.id }}">
+                                                 <div class="user-img"> <span class="round">{{ loop.index }}</span> <span class=" away pull-right"></span> </div>
+                                                 <div class="mail-contnet">
+                                                     <h5>{{ onelist.getListName() }}</h5> <span class="mail-desc">{{ onelist.getDataAdded().date|date("Y/m/d H:m") }}</span></div>
+                                             </a>
+                                         {% endfor %}
+
+                                    {% endif %}
                                     <!-- Message -->
-                                    <a href="#">
-                                        <div class="user-img"> <span class="round">A</span> <span class="profile-status away pull-right"></span> </div>
-                                        <div class="mail-contnet">
-                                            <h5>Arijit Sinh</h5> <span class="mail-desc">cruise1298.fiplip@gmail.com</span></div>
-                                    </a>
-                                    <!-- Message -->
-                                    <a href="#">
-                                        <div class="user-img"> <img src="../assets/images/users/4.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
-                                        <div class="mail-contnet">
-                                            <h5>Pavan kumar</h5> <span class="mail-desc">kat@gmail.com</span></div>
-                                    </a>
-                                    <!-- Message -->
-                                    <a href="#">
-                                        <div class="user-img"> <img src="../assets/images/users/5.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
-                                        <div class="mail-contnet">
-                                            <h5>Andrew</h5> <span class="mail-desc">and@gmail.com</span></div>
-                                    </a>
-                                    <!-- Message -->
-                                    <a href="#">
-                                        <div class="user-img"> <img src="../assets/images/users/6.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
-                                        <div class="mail-contnet">
-                                            <h5>Jonathan Jones</h5> <span class="mail-desc">jj@gmail.com</span></div>
-                                    </a>
                                 </div>
                             </div>
                         </div>

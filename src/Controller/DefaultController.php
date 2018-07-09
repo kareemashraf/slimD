@@ -38,6 +38,7 @@ class DefaultController extends Controller
      */
     public function index()
     {
+
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
         $entityManager = $this->getDoctrine()->getManager();

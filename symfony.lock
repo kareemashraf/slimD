@@ -93,7 +93,7 @@
         "version": "1.23.0"
     },
     "nikic/php-parser": {
-        "version": "v4.0.1"
+        "version": "v4.0.2"
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
@@ -133,6 +133,15 @@
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.0.2"
+    },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "c82bead70f9a4f656354a193df7bf0ca2114efa0"
+        }
     },
     "symfony/asset": {
         "version": "v3.4.8"
@@ -275,6 +284,9 @@
     "symfony/polyfill-apcu": {
         "version": "v1.7.0"
     },
+    "symfony/polyfill-ctype": {
+        "version": "v1.8.0"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.7.0"
     },
@@ -292,6 +304,15 @@
     },
     "symfony/property-info": {
         "version": "v3.4.8"
+    },
+    "symfony/requirements-checker": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "93d0ec48679f5e240d265088305c1ad775723f93"
+        }
     },
     "symfony/routing": {
         "version": "3.3",

@@ -255,6 +255,10 @@ class DefaultController extends Controller
                 'attr' => ['class' => 'form-control', 'style' => 'width: 70%;', 'placeholder' => 'name@example.com'], // for input
                 'label_attr' => ['class' => 'col-sm-2 col-form-label col-form-label-sm'], // for label
             ])
+            ->add('sender_name', TextType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'width: 70%;', 'placeholder' => 'Sender Name'], // for input
+                'label_attr' => ['class' => 'col-sm-2 col-form-label col-form-label-sm'], // for label
+            ])
             ->add('subject', TextType::class, [
                 'attr' => ['class' => 'form-control', 'style' => 'width: 70%;'], // for input
                 'label_attr' => ['class' => 'col-sm-2 col-form-label col-form-label-sm'], // for label
@@ -281,11 +285,13 @@ class DefaultController extends Controller
             $message_html = $data['message_html'];
             $message_text = strip_tags($message_html);
             $message_from = $data['from'];
+            $message_sender = $data['sender_name'];
             $message_subject = $data['subject'];
 
             $params['html'] = $message_html;
             $params['text'] = $message_text;
             $params['from'] = $message_from;
+            $params['sender'] = $message_sender;
             $params['subject'] = $message_subject;
             $params['list_id']= $list_id;
             $params['user'] = $usr;

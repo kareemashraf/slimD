@@ -27,6 +27,7 @@ class EmailController extends Controller
             $history->setUserId($params['user']->getId());
             $history->setListId($params['list_id']);
             $history->setFromtext($params['from']);
+            $history->setSendername($params['sender']);
             $history->setSubjecttext($params['subject']);
             $history->setMessageHtml($params['html']);
             $history->setMessagePlaintext($params['text']);
@@ -62,6 +63,7 @@ class EmailController extends Controller
                     $new_message = array($email, $name, $gender);
 
                     $from = $list->getFromtext();
+                    $sender_name = $list->getSendername();
                     $subject = $list->getSubjecttext();
                     $message_html = str_replace($old_message, $new_message, $list->getMessagehtml());
                     $message_text = strip_tags($message_html);
@@ -76,7 +78,7 @@ class EmailController extends Controller
                     $mailer = new Swift_Mailer($transport);
 
                     $message = (new Swift_Message($subject))
-                        ->setFrom(array($from => 'Kareem is Testing it'))
+                        ->setFrom(array($from => $sender_name))
                         ->setTo($email)
                         ->setBody($message_text)
                         ->addPart($message_html, 'text/html')

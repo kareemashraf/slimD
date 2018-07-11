@@ -37,6 +37,11 @@ class History
     private $fromtext;
 
     /**
+     * @ORM\Column(type="text", length=100, nullable=true)
+     */
+    private $sendername;
+
+    /**
      * @ORM\Column(type="text", length=100)
      */
     private $subjecttext;
@@ -119,6 +124,22 @@ class History
     public function setFromtext($fromtext)
     {
         $this->fromtext = $fromtext;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSendername()
+    {
+        return $this->sendername;
+    }
+
+    /**
+     * @param mixed $sendername
+     */
+    public function setSendername($sendername)
+    {
+        $this->sendername = $sendername;
     }
 
     /**

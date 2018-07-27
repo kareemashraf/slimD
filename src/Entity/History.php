@@ -27,9 +27,10 @@ class History
 
     //TODO: ManyToOne relationship. in v 2.0
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Emaillist", inversedBy="histories")
      */
-    private $list_id;
+    private $list;
+
 
     /**
      * @ORM\Column(type="text", length=100)
@@ -97,17 +98,17 @@ class History
     /**
      * @return mixed
      */
-    public function getListId()
+    public function getList()
     {
-        return $this->list_id;
+        return $this->list;
     }
 
     /**
-     * @param mixed $list_id
+     * @param mixed $list
      */
-    public function setListId($list_id)
+    public function setList($list)
     {
-        $this->list_id = $list_id;
+        $this->list = $list;
     }
 
     /**

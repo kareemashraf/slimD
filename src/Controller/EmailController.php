@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Leads;
+use App\Entity\Emaillist;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\History;
@@ -22,10 +23,13 @@ class EmailController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
 
+
         if ($params['user']->getIsActive() == true ){
+            $list = $entityManager->getRepository(Emaillist::class)->findOneById($params['list_id']);
+
             $history  = new History();
             $history->setUserId($params['user']->getId());
-            $history->setListId($params['list_id']);
+            $history->setList($list);
             $history->setFromtext($params['from']);
             $history->setSendername($params['sender']);
             $history->setSubjecttext($params['subject']);
@@ -48,7 +52,7 @@ class EmailController extends Controller
 
         foreach ($activelists as $key => $list){
 
-            $listId = $list->getListId();
+            $listId = $list->getList();
             $leads = $entityManager->getRepository(Leads::class)->findByListIdAll($listId);
             $sent_leads = $entityManager->getRepository(Leads::class)->findByListIdnotSent($listId);
 

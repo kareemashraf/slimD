@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
 use Doctrine\ORM\Mapping\Index;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EmaillistRepository")
@@ -24,6 +26,11 @@ class Emaillist
      */
     private $list_name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\History", mappedBy="list")
+     */
+    private $histories;
+
 
     //TODO: ManyToOne relationship. in v 2.0
     /**
@@ -31,8 +38,6 @@ class Emaillist
      */
     private $user_id;
 
-    //, mimeTypesMessage = "Please upload a valid CSV file"
-    //TODO: Determine either CSV, Excel or both! 
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
@@ -59,6 +64,8 @@ class Emaillist
     {
         $this->isActive = true;
         $this->data_added = new \DateTime();
+
+        $this->histories = new ArrayCollection();
     }
 
     public function getId()
@@ -152,6 +159,16 @@ class Emaillist
     {
         $this->isActive = $isActive;
     }
+
+    /**
+     * @return Collection|History[]
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
+
 
 
 

@@ -131,12 +131,12 @@
                                                     <h6>{{ order.subjecttext }}</h6><small class="text-muted">{{ order.getOrderDate().date|date("Y/m/d H:m") }}</small></td>
                                                 <td><a href="/emails/{{ order.getList().id }}"> {{ order.getList().listname }}</a></td>
                                                 {% if (order.getisActive() == 1) %}
-                                                    <td style="color: red"><b>Running</b> <img class="small" src="../assets/images/loading.gif" alt="Loading" style="width: 20%;"> </td>
-                                                    <td>button to cancel</td>
+                                                    <td style="color: red">Running <img class="small" src="../assets/images/loading.gif" alt="Loading" style="width: 50%;"> </td>
+                                                    <td><button type="button" class="btn btn-outline-danger" style="float: right;">Stop</button></td>
 
                                                 {% else %}
                                                     <td style="color: green"><b>Done</b></td>
-                                                    <td>maybe resend ?</td>
+                                                    <td>..</td>
                                                 {% endif %}
                                             </tr>
                                          {% endfor %}

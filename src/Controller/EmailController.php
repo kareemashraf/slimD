@@ -116,7 +116,7 @@ class EmailController extends Controller
 
         }
 
-
+    var_dump($activelists); die;
 
     }
 

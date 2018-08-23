@@ -940,9 +940,20 @@ When click on sidebar toggler and also for tablet
     .mini-sidebar .sidebar-nav #sidebarnav > li:hover > a .hide-menu {
       display: inline; }
     .mini-sidebar .sidebar-nav #sidebarnav > li:hover > a .label {
-      display: none; } }
+      display: none; }
+
+  .running{
+      width: 20%;
+    }
+}
+
+
 
 @media (max-width: 767px) {
+  .running{
+    width: 50%;
+    margin-right: 10px;
+  }
   .mini-sidebar .left-sidebar {
     position: fixed; }
   .mini-sidebar .left-sidebar,

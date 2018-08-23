@@ -35,7 +35,14 @@ class HistoryRepository extends ServiceEntityRepository
         ;
     }
 
-
+    public function findOneById($value)
+    {
+        return $this->createQueryBuilder('h')
+            ->andWhere('h.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
     public function findByUserId($value)
     {

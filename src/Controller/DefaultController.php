@@ -340,6 +340,33 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * @Route("/ajax/stop")
+     */
+    public function stop_campaign(Request $request)
+    {
+        $userid = $request->request->get("userid");
+        $id     = $request->request->get("id");
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
+
+        if ($usr->getId() == $userid){
+            $entityManager = $this->getDoctrine()->getManager();
+            $campaign = $entityManager->getRepository(History::class)->findOneById($id);
+
+
+            $campaign->setIsActive('0'); // set send to False
+            $entityManager->persist($campaign);
+            $entityManager->flush();
+
+            return new Response();
+        }else{
+            return false; //todo return false in v 2.0
+        }
+
+
+
+    }
+
 
 
 }

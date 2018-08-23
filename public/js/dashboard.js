@@ -50,6 +50,32 @@ $('.send').click(function(){
     location.href='/emails/'+id;
 });
 
+//Stop Button
+$('#stop').click(function(){
+
+    if (confirm('Are you sure you want to Stop the selected emailing campaign ?')) {
+        var id = $(this).attr("data-orderid");
+        var userid = $(this).attr("data-user-id");
+
+        $.ajax({
+            url:"/ajax/stop",
+            type: "POST",
+            data: {"id": id,"userid": userid },
+            async: true,
+            success: function (data)
+            {
+                alert('Done');
+                location.href='/';
+            },
+            error: function(xhr, textStatus, errorThrown){
+                console.log('request failed');
+            }
+        });
+
+
+    }
+
+});
 
 $(function () {
     "use strict";

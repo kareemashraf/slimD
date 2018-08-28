@@ -56,6 +56,7 @@ class EmailController extends Controller
             $leads = $entityManager->getRepository(Leads::class)->findByListIdAll($listId);
             $sent_leads = $entityManager->getRepository(Leads::class)->findByListIdnotSent($listId);
 
+            $tracker = '<img src="http://mailgram.online/pixel/'.$list->getId().'/'.$list->getUserId().'?image=tracking.gif" alt="">';
 
             foreach ($sent_leads as $key2 => $lead){
                 if ($lead->getSent() == false) {
@@ -69,7 +70,7 @@ class EmailController extends Controller
                     $from = $list->getFromtext();
                     $sender_name = $list->getSendername();
                     $subject = $list->getSubjecttext();
-                    $message_html = str_replace($old_message, $new_message, $list->getMessagehtml());
+                    $message_html = str_replace($old_message, $new_message, $list->getMessagehtml()).$tracker;
                     $message_text = strip_tags($message_html);
 
 
@@ -77,8 +78,7 @@ class EmailController extends Controller
 
                     $transport = (new Swift_SmtpTransport('email-smtp.eu-west-1.amazonaws.com', 25, 'tls'))
                         ->setUsername('')
-                        ->setPassword('')
-                    ;
+                        ->setPassword('');
                     $mailer = new Swift_Mailer($transport);
 
                     $message = (new Swift_Message($subject))
@@ -88,7 +88,7 @@ class EmailController extends Controller
                         ->addPart($message_html, 'text/html')
 
                     ;
-                    $mailer->getTransport()->setSourceIp('8.8.8.8'); // dedecated IP here
+                    $mailer->getTransport()->setSourceIp('8.8.8.8'); // dedicated IP here
                     $mailer->send($message);
 
                     //end send email

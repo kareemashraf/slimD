@@ -25,7 +25,6 @@ class History
      */
     private $user_id;
 
-    //TODO: ManyToOne relationship. in v 2.0
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Emaillist", inversedBy="histories")
      */

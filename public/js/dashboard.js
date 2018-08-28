@@ -64,7 +64,6 @@ $('#stop').click(function(){
             async: true,
             success: function (data)
             {
-                alert('Done');
                 location.href='/';
             },
             error: function(xhr, textStatus, errorThrown){

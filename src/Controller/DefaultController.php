@@ -427,6 +427,11 @@ class DefaultController extends Controller
                 }
             }
         }
+
+        if(strstr(strtolower($_SERVER['HTTP_USER_AGENT']), 'mobile') || strstr(strtolower($_SERVER['HTTP_USER_AGENT']), 'android')) {
+            $deviceName = "mobile";
+        }
+
         return ucfirst($deviceName);
     }
 

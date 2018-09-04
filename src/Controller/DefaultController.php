@@ -376,9 +376,9 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/pixel/{id}/{userid}")
+     * @Route("/pixel/{id}/{userid}/{email}")
      */
-    public function pixel($id= NULL, $userid=NULL){
+    public function pixel($id= NULL, $userid=NULL, $email=NULL){
 
         header('Content-Type: image/gif');
         readfile('assets/images/tracking.gif');
@@ -398,6 +398,7 @@ class DefaultController extends Controller
             $tracking->setEmailId($historyId);
             $tracking->setIp($ip);
             $tracking->setUseragent($userAgent);
+            $tracking->setEmail($email);
             $tracking->setDevice($device);
 
             $entityManager->persist($tracking);

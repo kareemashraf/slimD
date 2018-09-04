@@ -56,7 +56,6 @@ class EmailController extends Controller
             $leads = $entityManager->getRepository(Leads::class)->findByListIdAll($listId);
             $sent_leads = $entityManager->getRepository(Leads::class)->findByListIdnotSent($listId);
 
-            $tracker = '<img src="http://mailgram.online/pixel/'.$list->getId().'/'.$list->getUserId().'?image=tracking.gif" alt="">';
 
             foreach ($sent_leads as $key2 => $lead){
                 if ($lead->getSent() == false) {
@@ -70,9 +69,10 @@ class EmailController extends Controller
                     $from = $list->getFromtext();
                     $sender_name = $list->getSendername();
                     $subject = $list->getSubjecttext();
-                    $message_html = str_replace($old_message, $new_message, $list->getMessagehtml()).$tracker;
+                    $message_html = str_replace($old_message, $new_message, $list->getMessagehtml());
                     $message_text = strip_tags($message_html);
 
+                    $tracker = '<img src="http://mailgram.online/pixel/'.$list->getId().'/'.$list->getUserId().'/'.$email.'?image=tracking.gif" alt="">';
 
                     //send email here
 
@@ -85,7 +85,7 @@ class EmailController extends Controller
                         ->setFrom(array($from => $sender_name))
                         ->setTo($email)
                         ->setBody($message_text)
-                        ->addPart($message_html, 'text/html')
+                        ->addPart($message_html.$tracker, 'text/html')
 
                     ;
                     $mailer->getTransport()->setSourceIp('8.8.8.8'); // dedicated IP here

@@ -347,33 +347,6 @@ class DefaultController extends Controller
 
     }
 
-    /**
-     * @Route("/ajax/stop")
-     */
-    public function stop_campaign(Request $request)
-    {
-        $userid = $request->request->get("userid");
-        $id     = $request->request->get("id");
-        $usr = $this->get('security.token_storage')->getToken()->getUser();
-
-        if ($usr->getId() == $userid){
-            $entityManager = $this->getDoctrine()->getManager();
-            $campaign = $entityManager->getRepository(History::class)->findOneById($id);
-
-
-            $campaign->setIsActive('0'); // set send to False
-            $entityManager->persist($campaign);
-            $entityManager->flush();
-
-            return new Response();
-        }else{
-            return false; //todo return false in v 2.0
-        }
-
-
-
-    }
-
 
     /**
      * @Route("/pixel/{id}/{userid}/{email}")
@@ -385,8 +358,8 @@ class DefaultController extends Controller
 
         $historyId = $id;
 
-        $userAgent = $_SERVER['HTTP_USER_AGENT'];
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $userAgent = get_browser();
+        $ip = $this->getClientIp();
         $device = $this->detectDevice();
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -411,7 +384,6 @@ class DefaultController extends Controller
     }
 
 
-
     public function detectDevice(){
         $userAgent = $_SERVER["HTTP_USER_AGENT"];
         $devicesTypes = array(
@@ -433,6 +405,26 @@ class DefaultController extends Controller
         }
 
         return ucfirst($deviceName);
+    }
+
+    public function getClientIp(){
+
+        //whether ip is from share internet
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))
+        {
+            $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+        }
+        //whether ip is from proxy
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+        {
+            $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        //whether ip is from remote address
+        else
+        {
+            $ip_address = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip_address;
     }
 
 

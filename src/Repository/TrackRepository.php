@@ -19,22 +19,38 @@ class TrackRepository extends ServiceEntityRepository
         parent::__construct($registry, Track::class);
     }
 
-//    /**
-//     * @return Track[] Returns an array of Track objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Track[] Returns an array of Track objects
+     */
+
+    public function findByUserId($value)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
+            ->andWhere('t.user_id = :val')
             ->setParameter('val', $value)
             ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    /**
+     * @return Track[] Returns an array of Track objects
+     */
+
+    public function findByUserIdYearly($value,$year)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.user_id = :val')
+            ->andWhere("DATE_FORMAT(t.tracking_date, '%Y') = :year")
+            ->setParameter('val', $value)
+            ->setParameter('year', $year)
+            ->orderBy('t.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Track

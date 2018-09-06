@@ -76,19 +76,55 @@ $('#stop').click(function(){
 
 });
 
-$(function () {
+
+//Tracking ajax
+var userid = $(this).attr("data-user-id");
+var year = $('.year').val();
+var month = [];
+var total =[];
+
+$.ajax({
+    url:"/ajax/opened_email",
+    type: "POST",
+    data: {"userid": userid, "year":year },
+    async: true,
+    success: function (data)
+    {
+        dashboard(data)
+
+    },
+    error: function(xhr, textStatus, errorThrown){
+        console.log('Tracking request failed');
+    }
+});
+
+
+$('.year').on('change',function(){
+    location.href='/';
+});
+
+function dashboard(data) {
+
+    $.each( data, function( key, value ) {
+        month.push(value.month);
+        total.push(value.total);
+    });
+
+
+    var max = Math.max.apply(Math,total)+2 ;
+
     "use strict";
     // ============================================================== 
-    // Sales overview
+    // Opened Email Tracking
     // ============================================================== 
      new Chartist.Line('#sales-overview2', {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        labels: month
         , series: [
-          {meta:"Earning ($)", data: [0, 150, 110, 240, 200, 200, 300, 200, 380, 300, 400, 380]}
+          {meta:"Opened Emails", data: total}
       ]
     }, {
         low: 0
-        , high:400
+        , high:max
         , showArea: true
         , divisor: 10
         , lineSmooth:false
@@ -97,7 +133,7 @@ $(function () {
         , chartPadding: 30
         , axisX: {
             showLabel: true
-            , showGrid: false
+            , showGrid: true
             , offset: 50
         }
         , plugins: [
@@ -111,7 +147,7 @@ $(function () {
             , showGrid: true
             , offset: 10,
             labelInterpolationFnc: function(value) {
-		      return (value / 100) + 'k'
+		      return (value / 1)
 		    },
 
         }
@@ -160,13 +196,13 @@ $(function () {
     // ============================================================== 
 
     var chart = new Chartist.Line('.website-visitor', {
-          labels: [1, 2, 3, 4, 5, 6, 7, 8],
+          labels: month,
           series: [
-            [0, 5, 6, 8, 25, 9, 8, 24]
-            , [0, 3, 1, 2, 8, 1, 5, 1]
+            total
+            , [0, 3, 1, 2]  // to be total sent emails per user and per month
           ]}, {
           low: 0,
-          high: 28,
+          high: max,
           showArea: true,
           fullWidth: true,
           plugins: [
@@ -209,4 +245,5 @@ $(function () {
             'stop-color': 'rgba(38, 198, 218, 1)'
           });
         });
-});
+};
+

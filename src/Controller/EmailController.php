@@ -68,7 +68,7 @@ class EmailController extends Controller
 
                     $from = $list->getFromtext();
                     $sender_name = $list->getSendername();
-                    $subject = $list->getSubjecttext();
+                    $subject = str_replace($old_message, $new_message, $list->getSubjecttext());
                     $message_html = str_replace($old_message, $new_message, $list->getMessagehtml());
                     $message_text = strip_tags($message_html);
 

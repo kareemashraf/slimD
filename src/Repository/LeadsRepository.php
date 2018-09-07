@@ -30,7 +30,7 @@ class LeadsRepository extends ServiceEntityRepository
             ->andWhere('l.sent = 0')
             ->setParameter('val', $value)
             ->orderBy('l.id', 'ASC')
-            ->setMaxResults(4) // for Cronjob max 500 leads per hour
+            ->setMaxResults(500) // for Cronjob max 500 leads per hour
             ->getQuery()
             ->getResult()
         ;

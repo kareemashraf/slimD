@@ -53,6 +53,11 @@ class EmailController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $activelists = $entityManager->getRepository(History::class)->findOneByActive();
 
+        $transport = (new Swift_SmtpTransport('email-smtp.eu-west-1.amazonaws.com', 25, 'tls'))
+            ->setUsername('AKIAI3ZCEWSAAFMINP4Q')
+            ->setPassword('AmjYgaQsuFXAR4oE48y36XtwM8dr3npLr+pRmsiHZs+l');
+        $mailer = new Swift_Mailer($transport);
+
         foreach ($activelists as $key => $list){
 
             $listId = $list->getList();
@@ -79,11 +84,6 @@ class EmailController extends Controller
 
                     //send email here
 
-                    $transport = (new Swift_SmtpTransport('email-smtp.eu-west-1.amazonaws.com', 25, 'tls'))
-                        ->setUsername('')
-                        ->setPassword('');
-                    $mailer = new Swift_Mailer($transport);
-
                     $message = (new Swift_Message($subject))
                         ->setFrom(array($from => $sender_name))
                         ->setTo($email)
@@ -92,20 +92,20 @@ class EmailController extends Controller
 
                     ;
                     $mailer->getTransport()->setSourceIp('8.8.8.8'); // dedicated IP here
-                    $mailer->send($message);
+                    $result = $mailer->send($message);
 
                     //end send email
+                    if ($result == 1) {
+                        $tracking = new Track();
+                        $tracking->setUserId($usr->getId());
+                        $tracking->setCampaignId($list->getId());
+                        $tracking->setSentTo($email);
 
-                    $tracking = new Track();
-                    $tracking->setUserId($usr->getId());
-                    $tracking->setCampaignId($list->getId());
-                    $tracking->setSentTo($email);
-
-                    $lead->setSent('1'); // set sent true
-                    $entityManager->persist($lead);
-                    $entityManager->persist($tracking);
-                    $entityManager->flush();
-
+                        $lead->setSent('1'); // set sent true
+                        $entityManager->persist($lead);
+                        $entityManager->persist($tracking);
+                        $entityManager->flush();
+                    }
                 }
 
                 // maybe update here instead ?
@@ -125,7 +125,6 @@ class EmailController extends Controller
 
         }
 
-//    var_dump($activelists); die;
 
     }
 

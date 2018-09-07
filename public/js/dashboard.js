@@ -221,7 +221,7 @@ var sentTotal = [];
             // ==============================================================
 
             var chart = new Chartist.Line('.website-visitor', {
-                labels: month,
+                labels: sentMonthly,
                 series: [
                     sentTotal // to be total sent emails per user and per month
                     , total

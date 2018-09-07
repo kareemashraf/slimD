@@ -83,10 +83,11 @@ var year = $('.year').val();
 var month = [];
 var total =[];
 
+//ajax the opened emails
 $.ajax({
     url:"/ajax/opened_email",
     type: "POST",
-    data: {"userid": userid, "year":year },
+    data: {"userid": userid, "year":year,"method":"opened" },
     async: true,
     success: function (data)
     {
@@ -104,7 +105,8 @@ $('.year').on('change',function(){
 });
 
 function dashboard(data) {
-
+    month.unshift('start');
+    total.unshift('0');
     $.each( data, function( key, value ) {
         month.push(value.month);
         total.push(value.total);
@@ -127,7 +129,7 @@ function dashboard(data) {
         , high:max
         , showArea: true
         , divisor: 10
-        , lineSmooth:false
+        , lineSmooth:true
         , fullWidth: true
         , showLine: true
         , chartPadding: 30
@@ -187,63 +189,101 @@ function dashboard(data) {
           //or hide: ['data1', 'data2']
         },
         color: {
-              pattern: ['#eceff1', '#745af2', '#26c6da', '#1e88e5']
+              pattern: ['#e6f1ec','#745af2', '#26c6da', '#1e88e5']
         }
     });
   	  
     // ============================================================== 
-    // Website Visitor
-    // ============================================================== 
+    // Sent / opened Comparison
+    // ==============================================================
 
-    var chart = new Chartist.Line('.website-visitor', {
-          labels: month,
-          series: [
-            total
-            , [0, 3, 1, 2]  // to be total sent emails per user and per month
-          ]}, {
-          low: 0,
-          high: max,
-          showArea: true,
-          fullWidth: true,
-          plugins: [
-            Chartist.plugins.tooltip()
-          ],
-            axisY: {
-            onlyInteger: true
-            , scaleMinSpace: 40    
-            , offset: 20
-            , labelInterpolationFnc: function (value) {
-                return (value / 1) + 'k';
-            }
-        },
-        });
-    	// Offset x1 a tiny amount so that the straight stroke gets a bounding box
-        // Straight lines don't get a bounding box 
-        // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
-        chart.on('draw', function(ctx) {  
-          if(ctx.type === 'area') {    
-            ctx.element.attr({
-              x1: ctx.x1 + 0.001
+var sentMonthly = [];
+var sentTotal = [];
+
+
+    //ajax the sent emails
+    $.ajax({
+        url:"/ajax/opened_email",
+        type: "POST",
+        data: {"userid": userid, "year":year,"method":"sent" },
+        async: true,
+        success: function (data)
+        {
+            sentMonthly.unshift('start');
+            sentTotal.unshift('0');
+            $.each( data, function( key, value ) {
+                sentMonthly.push(value.month);
+                sentTotal.push(value.total);
             });
-          }
-        });
+        var sentMax = Math.max.apply(Math,sentTotal)+2;
+            // ==============================================================
+            // Sent / opened Comparison inside Ajax Success
+            // ==============================================================
 
-        // Create the gradient definition on created event (always after chart re-render)
-        chart.on('created', function(ctx) {
-          var defs = ctx.svg.elem('defs');
-          defs.elem('linearGradient', {
-            id: 'gradient',
-            x1: 0,
-            y1: 1,
-            x2: 0,
-            y2: 0
-          }).elem('stop', {
-            offset: 0,
-            'stop-color': 'rgba(255, 255, 255, 1)'
-          }).parent().elem('stop', {
-            offset: 1,
-            'stop-color': 'rgba(38, 198, 218, 1)'
-          });
-        });
+            var chart = new Chartist.Line('.website-visitor', {
+                labels: month,
+                series: [
+                    sentTotal // to be total sent emails per user and per month
+                    , total
+                ]}, {
+                low: 0,
+                high: sentMax,
+                showArea: true,
+                fullWidth: true,
+                plugins: [
+                    Chartist.plugins.tooltip()
+                ],
+                axisY: {
+                    onlyInteger: true
+                    , scaleMinSpace: 40
+                    , offset: 20
+                    , labelInterpolationFnc: function (value) {
+                        return (value / 1) ;
+                    }
+                },
+            });
+            // Offset x1 a tiny amount so that the straight stroke gets a bounding box
+            // Straight lines don't get a bounding box
+            // Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
+            chart.on('draw', function(ctx) {
+                if(ctx.type === 'area') {
+                    ctx.element.attr({
+                        x1: ctx.x1 + 0.001
+                    });
+                }
+            });
+
+            // Create the gradient definition on created event (always after chart re-render)
+            chart.on('created', function(ctx) {
+                var defs = ctx.svg.elem('defs');
+                defs.elem('linearGradient', {
+                    id: 'gradient',
+                    x1: 0,
+                    y1: 1,
+                    x2: 0,
+                    y2: 0
+                }).elem('stop', {
+                    offset: 0,
+                    'stop-color': 'rgba(255, 255, 255, 1)'
+                }).parent().elem('stop', {
+                    offset: 1,
+                    'stop-color': 'rgba(38, 198, 218, 1)'
+                });
+            });
+
+
+            // ==============================================================
+            // End the Sent/opened Comparison in Ajax
+            // ==============================================================
+
+        },
+        error: function(xhr, textStatus, errorThrown){
+            console.log('Tracking request failed');
+        }
+    });
+
+
+
+
 };
 

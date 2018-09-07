@@ -47,21 +47,42 @@ class AjaxController extends Controller
      */
     public function opens(Request $request)
     {
+        $method = $request->request->get("method");
         $year = '2018'; //  $request->request->get("year");
         $usr= $this->get('security.token_storage')->getToken()->getUser();
-        $entityManager = $this->getDoctrine()->getManager();
-//        $opens   = $entityManager->getRepository(Track::class)->findByUserId($usr->getId());
-//        $opens_perYear   = $entityManager->getRepository(Track::class)->findByUserIdYearly($usr->getId(),$year);
-
         $em = $this->getDoctrine()->getManager();
-        $RAW_QUERY = "select   count(*) as total, DATE_FORMAT(`tracking_date`, '%b') as month from `track`  WHERE DATE_FORMAT(`tracking_date`, '%Y') = '2018' AND user_id = ".$usr->getId()." GROUP BY DATE_FORMAT(`tracking_date`, '%Y-%m') ORDER BY tracking_date asc";
 
-        $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->execute();
+        if ($method == "opened") {
 
-        $result = $statement->fetchAll();
+            $RAW_QUERY = "select   count(*) as total, DATE_FORMAT(`opened_date`, '%b') as month from `track` 
+                      WHERE DATE_FORMAT(`opened_date`, '%Y') = '" . $year . "' 
+                      AND user_id = '" . $usr->getId() . "' AND opened = 1 
+                      GROUP BY DATE_FORMAT(`opened_date`, '%Y-%m') 
+                      ORDER BY opened_date asc;";
 
-        return $this->json($result);
+            $statement = $em->getConnection()->prepare($RAW_QUERY);
+            $statement->execute();
+
+            $result = $statement->fetchAll();
+
+            return $this->json($result);
+        }
+        elseif ($method == "sent"){
+            $RAW_QUERY = "select   count(*) as total, DATE_FORMAT(`opened_date`, '%b') as month from `track`  
+                          WHERE DATE_FORMAT(`sent_date`, '%Y') = '" . $year . "' 
+                          AND user_id = '". $usr->getId() ."'
+                          GROUP BY DATE_FORMAT(`sent_date`, '%Y-%m') 
+                          ORDER BY sent_date asc;";
+
+            $statement = $em->getConnection()->prepare($RAW_QUERY);
+            $statement->execute();
+
+            $result = $statement->fetchAll();
+
+            return $this->json($result);
+        }
+
+        return false;
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Leads;
+use App\Entity\Track;
 use App\Entity\Emaillist;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -47,6 +48,8 @@ class EmailController extends Controller
      * @Route("/send")
      */
     public function send(){
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
         $entityManager = $this->getDoctrine()->getManager();
         $activelists = $entityManager->getRepository(History::class)->findOneByActive();
 
@@ -93,8 +96,14 @@ class EmailController extends Controller
 
                     //end send email
 
+                    $tracking = new Track();
+                    $tracking->setUserId($usr->getId());
+                    $tracking->setCampaignId($list->getId());
+                    $tracking->setSentTo($email);
+
                     $lead->setSent('1'); // set sent true
                     $entityManager->persist($lead);
+                    $entityManager->persist($tracking);
                     $entityManager->flush();
 
                 }

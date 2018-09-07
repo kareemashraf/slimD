@@ -23,33 +23,37 @@ class TrackRepository extends ServiceEntityRepository
      * @return Track[] Returns an array of Track objects
      */
 
-    public function findByUserId($value)
+    public function findOneByUserIdandEmail($userid, $campaignId, $email)
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.user_id = :val')
-            ->setParameter('val', $value)
+            ->andWhere('t.campaign_id = :val2')
+            ->andWhere('t.sent_to = :val3')
+            ->setParameter('val', $userid)
+            ->setParameter('val2', $campaignId)
+            ->setParameter('val3', $email)
             ->orderBy('t.id', 'ASC')
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
-
-    /**
-     * @return Track[] Returns an array of Track objects
-     */
-
-    public function findByUserIdYearly($value,$year)
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.user_id = :val')
-            ->andWhere("DATE_FORMAT(t.tracking_date, '%Y') = :year")
-            ->setParameter('val', $value)
-            ->setParameter('year', $year)
-            ->orderBy('t.id', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
+//
+//    /**
+//     * @return Track[] Returns an array of Track objects
+//     */
+//
+//    public function findByUserIdYearly($value,$year)
+//    {
+//        return $this->createQueryBuilder('t')
+//            ->andWhere('t.user_id = :val')
+//            ->andWhere("DATE_FORMAT(t.tracking_date, '%Y') = :year")
+//            ->setParameter('val', $value)
+//            ->setParameter('year', $year)
+//            ->orderBy('t.id', 'ASC')
+//            ->getQuery()
+//            ->getResult()
+//            ;
+//    }
 
 
     /*

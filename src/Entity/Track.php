@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Date;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrackRepository")
@@ -25,7 +27,7 @@ class Track
     /**
      * @ORM\Column(type="string", length=5)
      */
-    private $email_id;
+    private $campaign_id;
 
     /**
      * @ORM\Column(type="text", length=20, nullable=true)
@@ -45,17 +47,29 @@ class Track
     /**
      * @ORM\Column(type="text", length=100, nullable=true)
      */
-    private $email;
+    private $sent_to;
+
+    /**
+     * @ORM\Column(name="opened", type="boolean")
+     */
+    private $opened;
 
     /**
      * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
-    private $tracking_date;
+    private $sent_date;
+
+    /**
+     * @Assert\DateTime()
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $opened_date;
 
     public function __construct()
     {
-        $this->tracking_date = new \DateTime();
+        $this->opened = false;
+        $this->sent_date = new \DateTime();
     }
 
 
@@ -78,22 +92,6 @@ class Track
     public function setUserId($user_id)
     {
         $this->user_id = $user_id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmailId()
-    {
-        return $this->email_id;
-    }
-
-    /**
-     * @param mixed $email_id
-     */
-    public function setEmailId($email_id)
-    {
-        $this->email_id = $email_id;
     }
 
     /**
@@ -147,34 +145,81 @@ class Track
     /**
      * @return mixed
      */
-    public function getEmail()
+    public function getCampaignId()
     {
-        return $this->email;
+        return $this->campaign_id;
     }
 
     /**
-     * @param mixed $email
+     * @param mixed $campaign_id
      */
-    public function setEmail($email)
+    public function setCampaignId($campaign_id)
     {
-        $this->email = $email;
+        $this->campaign_id = $campaign_id;
     }
 
     /**
      * @return mixed
      */
-    public function getTrackingDate()
+    public function getSentTo()
     {
-        return $this->tracking_date;
+        return $this->sent_to;
     }
 
     /**
-     * @param mixed $tracking_date
+     * @param mixed $sent_to
      */
-    public function setTrackingDate($tracking_date)
+    public function setSentTo($sent_to)
     {
-        $this->tracking_date = $tracking_date;
+        $this->sent_to = $sent_to;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOpened()
+    {
+        return $this->opened;
+    }
+
+    /**
+     * @param mixed $opened
+     */
+    public function setOpened($opened)
+    {
+        $this->opened = $opened;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSentDate()
+    {
+        return $this->sent_date;
+    }
+
+    /**
+     * @param mixed $sent_date
+     */
+    public function setSentDate($sent_date)
+    {
+        $this->sent_date = $sent_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOpenedDate()
+    {
+        return $this->opened_date;
+    }
+
+    /**
+     * @param mixed $opened_date
+     */
+    public function setOpenedDate($opened_date)
+    {
+        $this->opened_date = $opened_date;
+    }
 
 }

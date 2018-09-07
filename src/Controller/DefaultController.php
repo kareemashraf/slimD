@@ -356,30 +356,25 @@ class DefaultController extends Controller
         header('Content-Type: image/gif');
         readfile('assets/images/tracking.gif');
 
-        $historyId = $id;
+        $campaignId = $id;
+        $usr= $this->get('security.token_storage')->getToken()->getUser();
 
-        $userAgent = get_browser();
+        $userAgent = $_SERVER["HTTP_USER_AGENT"];
         $ip = $this->getClientIp();
         $device = $this->detectDevice();
 
         $entityManager = $this->getDoctrine()->getManager();
+        $opens   = $entityManager->getRepository(Track::class)->findOneByUserIdandEmail($usr->getId(),$campaignId,$email);
 
-        $tracking = new Track();
+        $opens->setIp($ip);
+        $opens->setUserAgent($userAgent);
+        $opens->setDevice($device);
+        $opens->setOpened(true);
+        $opens->setOpenedDate(new \DateTime());
 
-        if ($historyId && $userid){
-            $tracking->setUserId($userid);
-            $tracking->setEmailId($historyId);
-            $tracking->setIp($ip);
-            $tracking->setUseragent($userAgent);
-            $tracking->setEmail($email);
-            $tracking->setDevice($device);
+        $entityManager->flush();
 
-            $entityManager->persist($tracking);
-            $entityManager->flush();
-
-        }
-        die('done');
-
+        die('done updating Track record: '.$opens->getId() );
 
     }
 

@@ -357,14 +357,13 @@ class DefaultController extends Controller
         readfile('assets/images/tracking.gif');
 
         $campaignId = $id;
-        $usr= $this->get('security.token_storage')->getToken()->getUser();
 
         $userAgent = $_SERVER["HTTP_USER_AGENT"];
         $ip = $this->getClientIp();
         $device = $this->detectDevice();
 
         $entityManager = $this->getDoctrine()->getManager();
-        $opens   = $entityManager->getRepository(Track::class)->findOneByUserIdandEmail($usr->getId(),$campaignId,$email);
+        $opens   = $entityManager->getRepository(Track::class)->findOneByUserIdandEmail($userid,$campaignId,$email);
 
         $opens->setIp($ip);
         $opens->setUserAgent($userAgent);

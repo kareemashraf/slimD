@@ -54,8 +54,8 @@ class EmailController extends Controller
         $activelists = $entityManager->getRepository(History::class)->findOneByActive();
 
         $transport = (new Swift_SmtpTransport('email-smtp.eu-west-1.amazonaws.com', 25, 'tls'))
-            ->setUsername('AKIAI3ZCEWSAAFMINP4Q')
-            ->setPassword('AmjYgaQsuFXAR4oE48y36XtwM8dr3npLr+pRmsiHZs+l');
+            ->setUsername('')
+            ->setPassword('');
         $mailer = new Swift_Mailer($transport);
 
         foreach ($activelists as $key => $list){

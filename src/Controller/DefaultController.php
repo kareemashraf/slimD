@@ -351,10 +351,11 @@ class DefaultController extends Controller
     /**
      * @Route("/pixel/{id}/{userid}/{email}")
      */
-    public function pixel($id= NULL, $userid=NULL, $email=NULL){
+    public function pixel($id = NULL, $userid = NULL, $email = NULL)
+    {
 
-//        header('Content-Type: image/gif');
-//        readfile('assets/images/tracking.gif');
+        header('Content-Type: image/gif');
+        readfile('assets/images/tracking.gif');
 
         $campaignId = $id;
 
@@ -363,24 +364,24 @@ class DefaultController extends Controller
         $device = $this->detectDevice();
 
         $entityManager = $this->getDoctrine()->getManager();
-        $opens   = $entityManager->getRepository(Track::class)->findOneByUserIdandEmail($userid,$campaignId,$email);
-        var_dump($opens); die;
-    if($opens) {
-        if (isset($ip)) {
-            $opens->setIp($ip);
-        }
-        if (isset($userAgent)) {
-            $opens->setUserAgent($userAgent);
-        }
-        if (isset($device)) {
-            $opens->setDevice($device);
-        }
-        $opens->setOpened('1');
-        $opens->setOpenedDate(new \DateTime());
+        $opens = $entityManager->getRepository(Track::class)->findOneByUserIdandEmail($userid, $campaignId, $email);
 
-        $entityManager->flush();
-        die('done updating Track record: '.$opens->getId() );
-    }
+        if ($opens) {
+            if (isset($ip)) {
+                $opens->setIp($ip);
+            }
+            if (isset($userAgent)) {
+                $opens->setUserAgent($userAgent);
+            }
+            if (isset($device)) {
+                $opens->setDevice($device);
+            }
+            $opens->setOpened(true);
+            $opens->setOpenedDate(new \DateTime());
+
+            $entityManager->flush();
+            die('done updating Track record: ' . $opens->getId());
+        }
 
         return new Response();
 

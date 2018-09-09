@@ -35,6 +35,7 @@ class TrackRepository extends ServiceEntityRepository
             ->orderBy('t.id', 'ASC')
             ->getQuery()
 //            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
 //

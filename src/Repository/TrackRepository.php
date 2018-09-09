@@ -34,8 +34,7 @@ class TrackRepository extends ServiceEntityRepository
             ->setParameter('val3', $email)
             ->orderBy('t.id', 'ASC')
             ->getQuery()
-//            ->getOneOrNullResult()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
 //

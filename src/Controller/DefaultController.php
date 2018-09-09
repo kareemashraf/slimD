@@ -353,8 +353,8 @@ class DefaultController extends Controller
      */
     public function pixel($id= NULL, $userid=NULL, $email=NULL){
 
-        header('Content-Type: image/gif');
-        readfile('assets/images/tracking.gif');
+//        header('Content-Type: image/gif');
+//        readfile('assets/images/tracking.gif');
 
         $campaignId = $id;
 

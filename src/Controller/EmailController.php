@@ -93,7 +93,7 @@ class EmailController extends Controller
                     ;
                     $mailer->getTransport()->setSourceIp('8.8.8.8'); // dedicated IP here
                     $result = $mailer->send($message);
-
+var_dump($result,$mailer); die;
                     //end send email
                     if ($result == 1) {
                         $tracking = new Track();

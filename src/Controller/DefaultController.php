@@ -359,15 +359,21 @@ class DefaultController extends Controller
         $campaignId = $id;
 
         $userAgent = $_SERVER["HTTP_USER_AGENT"];
-        $ip = $this->getClientIp();
+        $ip = $_SERVER["HTTP_USER_AGENT"];
         $device = $this->detectDevice();
 
         $entityManager = $this->getDoctrine()->getManager();
         $opens   = $entityManager->getRepository(Track::class)->findOneByUserIdandEmail($userid,$campaignId,$email);
 
-        $opens->setIp($ip);
-        $opens->setUserAgent($userAgent);
-        $opens->setDevice($device);
+        if(isset($ip)) {
+            $opens->setIp($ip);
+        }
+        if (isset($userAgent)) {
+            $opens->setUserAgent($userAgent);
+        }
+        if (isset($device)) {
+            $opens->setDevice($device);
+        }
         $opens->setOpened(true);
         $opens->setOpenedDate(new \DateTime());
 
@@ -400,27 +406,6 @@ class DefaultController extends Controller
 
         return ucfirst($deviceName);
     }
-
-    public function getClientIp(){
-
-        //whether ip is from share internet
-        if (!empty($_SERVER['HTTP_CLIENT_IP']))
-        {
-            $ip_address = $_SERVER['HTTP_CLIENT_IP'];
-        }
-        //whether ip is from proxy
-        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-        {
-            $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        //whether ip is from remote address
-        else
-        {
-            $ip_address = $_SERVER['REMOTE_ADDR'];
-        }
-        return $ip_address;
-    }
-
 
 
 

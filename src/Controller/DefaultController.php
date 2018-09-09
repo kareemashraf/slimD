@@ -364,6 +364,7 @@ class DefaultController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
         $opens   = $entityManager->getRepository(Track::class)->findOneByUserIdandEmail($userid,$campaignId,$email);
+        var_dump($opens); die;
     if($opens) {
         if (isset($ip)) {
             $opens->setIp($ip);

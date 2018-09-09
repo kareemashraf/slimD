@@ -374,7 +374,7 @@ class DefaultController extends Controller
         if (isset($device)) {
             $opens->setDevice($device);
         }
-        $opens->setOpened(true);
+        $opens->setOpened('1');
         $opens->setOpenedDate(new \DateTime());
 
         $entityManager->flush();

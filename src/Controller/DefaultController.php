@@ -366,13 +366,13 @@ class DefaultController extends Controller
         $opens   = $entityManager->getRepository(Track::class)->findOneByUserIdandEmail($userid,$campaignId,$email);
 
         if(isset($ip)) {
-            $opens->setIp($ip);
+//            $opens->setIp($ip);
         }
         if (isset($userAgent)) {
-            $opens->setUserAgent($userAgent);
+//            $opens->setUserAgent($userAgent);
         }
         if (isset($device)) {
-            $opens->setDevice($device);
+//            $opens->setDevice($device);
         }
         $opens->setOpened(true);
         $opens->setOpenedDate(new \DateTime());

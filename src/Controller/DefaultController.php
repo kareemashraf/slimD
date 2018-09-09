@@ -378,9 +378,10 @@ class DefaultController extends Controller
         $opens->setOpenedDate(new \DateTime());
 
         $entityManager->flush();
+        die('done updating Track record: '.$opens->getId() );
     }
 
-        die('done updating Track record: '.$opens->getId() );
+        return new Response();
 
     }
 

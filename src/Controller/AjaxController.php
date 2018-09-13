@@ -97,20 +97,21 @@ class AjaxController extends Controller
     public function test()
     {
         $m = new SimpleEmailServiceMessage();
-        $m->addTo('kareem.ashraf.91@gmail.comxxx');
+        $m->setConfigurationSet('tracking');
+        $m->addTo('kareem.ashraf.91@gmail.com');
         $m->setFrom('kareem.ashraf.91@gmail.com');
-        $m->setSubject('Hello, world!');
+        $m->setSubject('hi');
         $m->setMessageFromString('This is the message body.');
 
         $trigger_error = true;
 
         $region_endpoint = SimpleEmailService::AWS_EU_WEST1;
 
-        $ses = new SimpleEmailService('AKIAJU6YCK5FGIDSEEKA', 'mvBIzPwQPw4w9RQxtgMnD/90lzqcmGO6oRfA4dkS', $region_endpoint,$trigger_error);
+        $ses = new SimpleEmailService('', '', $region_endpoint,$trigger_error);
 
-        $result = $ses->sendEmail($m, false, true);
+        $result = $ses->sendEmail($m, false, $trigger_error);
 
-        var_dump($result); die();
+        var_dump($m,$result); die();
     }
 
 

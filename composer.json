@@ -4,6 +4,7 @@
     "require": {
         "php": "^7.0.8",
         "ext-iconv": "*",
+        "aws/aws-sdk-php": "^3.67",
         "beberlei/DoctrineExtensions": "^1.1",
         "daniel-zahariev/php-aws-ses": "^0.9.1",
         "friendsofsymfony/ckeditor-bundle": "^1.0",

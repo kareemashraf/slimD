@@ -98,6 +98,31 @@ class AjaxController extends Controller
      */
     public function test()
     {
+
+
+        $trigger_error = true;
+        $region_endpoint = SimpleEmailService::AWS_EU_WEST1;
+        $ses = new SimpleEmailService('', '', $region_endpoint,$trigger_error);
+
+        $m = new SimpleEmailServiceMessage();
+        $m->setConfigurationSet('tracking');
+        $m->addTo('kareem.ashraf.91@gmail.com');
+        $m->setFrom('kareem.ashraf.91@gmail.com');
+        $m->setSubject('hi');
+        $m->setMessageFromString('This is the message body.','<h1>This is the message body. </h1><a href="http://mailgram.online" >mailgram</a> ');
+
+
+        $result = $ses->sendEmail($m, false, $trigger_error);
+
+        var_dump($result); die();
+
+
+    }
+
+    /**
+     * @Route("/ajax/tracking", name="tracking")
+     */
+    public function tracking(){
         $key = ''; //key
         $secret = ''; //secret
 
@@ -111,138 +136,121 @@ class AjaxController extends Controller
         ]);
 
         $result = $client->getMetricData([
-                'EndTime' => strtotime(date("Y-m-d H:i:s")), // REQUIRED
-                'StartTime' => strtotime(date('c', strtotime('-30 days'))), // REQUIRED
-                'MetricDataQueries' => [ // REQUIRED
-                    [
-                        'Id' => 's1', // REQUIRED
-                        'MetricStat' => [
-                                'Metric' => [ // REQUIRED
-                                    'Dimensions' => [
-                                        [
-                                            'Name' => 'signed-by', // REQUIRED
-                                            'Value' => 'amazonses.com', // REQUIRED
-                                        ],
-                                        // ...
-                                    ],
-                                    'MetricName' => 'Send',
-                                    'Namespace' => 'AWS/SES',
+            'EndTime' => strtotime(date("Y-m-d H:i:s")), // REQUIRED
+            'StartTime' => strtotime(date("Y-m-d H:i:s", strtotime('-30 days'))), // REQUIRED
+            'MetricDataQueries' => [ // REQUIRED
+                [
+                    'Id' => 's1', // REQUIRED
+                    'MetricStat' => [
+                        'Metric' => [ // REQUIRED
+                            'Dimensions' => [
+                                [
+                                    'Name' => 'signed-by', // REQUIRED
+                                    'Value' => 'amazonses.com', // REQUIRED
                                 ],
-                                'Period' => 2592000, // REQUIRED
-                            'Stat' => 'Sum', // REQUIRED
-                            'Unit' => 'Count',
-                        ],
-                    ],
-                    [
-                        'Id' => 's2', // REQUIRED
-                        'MetricStat' => [
-                            'Metric' => [ // REQUIRED
-                                'Dimensions' => [
-                                    [
-                                        'Name' => 'signed-by', // REQUIRED
-                                        'Value' => 'amazonses.com', // REQUIRED
-                                    ],
-                                    // ...
-                                ],
-                                'MetricName' => 'Open',
-                                'Namespace' => 'AWS/SES',
+                                // ...
                             ],
-                            'Period' => 2592000, // REQUIRED
-                            'Stat' => 'Sum', // REQUIRED
-                            'Unit' => 'Count',
+                            'MetricName' => 'Send',
+                            'Namespace' => 'AWS/SES',
                         ],
-                    ],
-                    [
-                        'Id' => 's3', // REQUIRED
-                        'MetricStat' => [
-                            'Metric' => [ // REQUIRED
-                                'Dimensions' => [
-                                    [
-                                        'Name' => 'signed-by', // REQUIRED
-                                        'Value' => 'amazonses.com', // REQUIRED
-                                    ],
-                                    // ...
-                                ],
-                                'MetricName' => 'Delivery',
-                                'Namespace' => 'AWS/SES',
-                            ],
-                            'Period' => 2592000, // REQUIRED
-                            'Stat' => 'Sum', // REQUIRED
-                            'Unit' => 'Count',
-                        ],
-                    ],
-                    [
-                        'Id' => 's4', // REQUIRED
-                        'MetricStat' => [
-                            'Metric' => [ // REQUIRED
-                                'Dimensions' => [
-                                    [
-                                        'Name' => 'signed-by', // REQUIRED
-                                        'Value' => 'amazonses.com', // REQUIRED
-                                    ],
-                                    // ...
-                                ],
-                                'MetricName' => 'Click',
-                                'Namespace' => 'AWS/SES',
-                            ],
-                            'Period' => 2592000, // REQUIRED
-                            'Stat' => 'Sum', // REQUIRED
-                            'Unit' => 'Count',
-                        ],
-                    ],
-                    [
-                        'Id' => 's5', // REQUIRED
-                        'MetricStat' => [
-                            'Metric' => [ // REQUIRED
-                                'Dimensions' => [
-                                    [
-                                        'Name' => 'signed-by', // REQUIRED
-                                        'Value' => 'amazonses.com', // REQUIRED
-                                    ],
-                                    // ...
-                                ],
-                                'MetricName' => 'Bounce',
-                                'Namespace' => 'AWS/SES',
-                            ],
-                            'Period' => 2592000, // REQUIRED
-                            'Stat' => 'Sum', // REQUIRED
-                            'Unit' => 'Count',
-                        ],
-                    ],
-                    [
-                        'Id' => 's6', // REQUIRED
-                        'MetricStat' => [
-                            'Metric' => [ // REQUIRED
-
-                                'MetricName' => 'Reputation.BounceRate',
-                                'Namespace' => 'AWS/SES',
-                            ],
-                            'Period' => 2592000, // REQUIRED
-                            'Stat' => 'Sum', // REQUIRED
-                            'Unit' => 'Count',
-                        ],
+                        'Period' => 86400, // 24 hours
+                        'Stat' => 'Sum', // REQUIRED
+                        'Unit' => 'Count',
                     ],
                 ],
-            ]);
-    var_dump($result['MetricDataResults']); die;
+                [
+                    'Id' => 's2', // REQUIRED
+                    'MetricStat' => [
+                        'Metric' => [ // REQUIRED
+                            'Dimensions' => [
+                                [
+                                    'Name' => 'signed-by', // REQUIRED
+                                    'Value' => 'amazonses.com', // REQUIRED
+                                ],
+                                // ...
+                            ],
+                            'MetricName' => 'Open',
+                            'Namespace' => 'AWS/SES',
+                        ],
+                        'Period' => 86400, // REQUIRED
+                        'Stat' => 'Sum', // REQUIRED
+                        'Unit' => 'Count',
+                    ],
+                ],
+                [
+                    'Id' => 's3', // REQUIRED
+                    'MetricStat' => [
+                        'Metric' => [ // REQUIRED
+                            'Dimensions' => [
+                                [
+                                    'Name' => 'signed-by', // REQUIRED
+                                    'Value' => 'amazonses.com', // REQUIRED
+                                ],
+                                // ...
+                            ],
+                            'MetricName' => 'Delivery',
+                            'Namespace' => 'AWS/SES',
+                        ],
+                        'Period' => 86400, // REQUIRED
+                        'Stat' => 'Sum', // REQUIRED
+                        'Unit' => 'Count',
+                    ],
+                ],
+                [
+                    'Id' => 's4', // REQUIRED
+                    'MetricStat' => [
+                        'Metric' => [ // REQUIRED
+                            'Dimensions' => [
+                                [
+                                    'Name' => 'signed-by', // REQUIRED
+                                    'Value' => 'amazonses.com', // REQUIRED
+                                ],
+                                // ...
+                            ],
+                            'MetricName' => 'Click',
+                            'Namespace' => 'AWS/SES',
+                        ],
+                        'Period' => 86400, // REQUIRED
+                        'Stat' => 'Sum', // REQUIRED
+                        'Unit' => 'Count',
+                    ],
+                ],
+                [
+                    'Id' => 's5', // REQUIRED
+                    'MetricStat' => [
+                        'Metric' => [ // REQUIRED
+                            'Dimensions' => [
+                                [
+                                    'Name' => 'signed-by', // REQUIRED
+                                    'Value' => 'amazonses.com', // REQUIRED
+                                ],
+                                // ...
+                            ],
+                            'MetricName' => 'Bounce',
+                            'Namespace' => 'AWS/SES',
+                        ],
+                        'Period' => 86400, // REQUIRED
+                        'Stat' => 'Sum', // REQUIRED
+                        'Unit' => 'Count',
+                    ],
+                ],
+                [
+                    'Id' => 's6', // REQUIRED
+                    'MetricStat' => [
+                        'Metric' => [ // REQUIRED
 
-//        $trigger_error = true;
-//        $region_endpoint = SimpleEmailService::AWS_EU_WEST1;
-//        $ses = new SimpleEmailService('', '', $region_endpoint,$trigger_error);
-//
-//        $m = new SimpleEmailServiceMessage();
-//        $m->setConfigurationSet('tracking');
-//        $m->addTo('kareem.ashraf.91@gmail.com');
-//        $m->setFrom('kareem.ashraf.91@gmail.com');
-//        $m->setSubject('hi');
-//        $m->setMessageFromString('This is the message body.','<h1>This is the message body. </h1><a href="http://mailgram.online" >mailgram</a> ');
-//
-//
-//        $result = $ses->sendEmail($m, false, $trigger_error);
-//
-//        var_dump($result); die();
+                            'MetricName' => 'Reputation.BounceRate',
+                            'Namespace' => 'AWS/SES',
+                        ],
+                        'Period' => 2592000, // REQUIRED
+                        'Stat' => 'Sum', // REQUIRED
+                        'Unit' => 'Count',
+                    ],
+                ],
+            ],
+        ]);
 
-
+        return $this->json( $result['MetricDataResults']);
     }
 
 

@@ -38,7 +38,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h3 class="text-themecolor">Dashboard</h3>
+                    <h3 class="text-themecolor">Dashboard (Tracking Statistics per 30 days)</h3>
                 </div>
                 <div class="col-md-7 align-self-center">
                     {#<a href="https://wrappixel.com/templates/adminpro" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down"> Upgrade to Pro</a>#}
@@ -47,45 +47,136 @@
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Sales overview chart -->
-            <!-- ============================================================== -->
+
             <div class="row">
-                <div class="col-lg-9 col-md-12">
-                    <div class="card">
+                <div class="col-lg-3">
+                    <div class="card bg-info">
                         <div class="card-body">
-                            <div class="d-flex">
-                                <div>
-                                    <h3 class="card-title m-b-5"><span class="lstick"></span>Tracking Overview </h3>
-                                </div>
-                                <div class="ml-auto">
-                                    <select class="custom-select b-0 year ">
-                                        <option class=" " value="2018" selected="">2018</option>
-                                        <option class=" " value="2019">2019</option>
-                                        <option class=" "  value="2020">2020</option>
-                                    </select>
-                                </div>
+                            <div class="d-flex no-block">
+                                <div class="m-r-20 align-self-center"><i class="fa  fa-paper-plane-o fa-4x" aria-hidden="true"></i></div>
+                                <div class="align-self-center">
+                                    <h6 class="text-white m-t-10 m-b-0">Delievered</h6>
+                                    <h2 class="m-t-0 text-white track-delivered"></h2></div>
                             </div>
-                            <div id="sales-overview2" class="p-relative" style="height:360px;"></div>
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-3">
+                    <div class="card bg-success">
+                        <div class="card-body">
+                            <div class="d-flex no-block">
+                                <div class="m-r-20 align-self-center"><i class="fa  fa-envelope-open-o fa-4x" aria-hidden="true"></i></div>
+                                <div class="align-self-center">
+                                    <h6 class="text-white m-t-10 m-b-0">Opened</h6>
+                                    <h2 class="m-t-0 text-white track-opened"></h2></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card bg-secondary">
+                        <div class="card-body">
+                            <div class="d-flex no-block">
+                                <div class="m-r-20 align-self-center"><i class="fa fa-sign-in fa-4x" aria-hidden="true"></i></div>
+                                <div class="align-self-center">
+                                    <h6 class="text-white m-t-10 m-b-0">Clicks</h6>
+                                    <h2 class="m-t-0 text-white track-clicks"></h2></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card bg-danger">
+                        <div class="card-body">
+                            <div class="d-flex no-block">
+                                <div class="m-r-20 align-self-center"><i class="fa fa-retweet fa-4x" aria-hidden="true"></i></div>
+                                <div class="align-self-center">
+                                    <h6 class="text-white m-t-10 m-b-0">Bounces</h6>
+                                    <h2 class="m-t-0 text-white track-bounces"></h2></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="row">
+            <div class="col-lg-9 col-md-12">
+                <div class="card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="bg-theme stats-bar">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="p-20 active">
+                                            <h6 class="text-white">Total Sent (per 30 days)</h6>
+                                            <h3 class="text-white m-b-0 stat-sent"></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="p-20">
+                                            <h6 class="text-white">Delivered</h6>
+                                            <h3 class="text-white m-b-0 stat-delivered"></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="p-20">
+                                            <h6 class="text-white">Bounced</h6>
+                                            <h3 class="text-white m-b-0 stat-bounced"></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <h4 class="card-title"><span class="lstick"></span>Sent / Delivered Comparison</h4>
+                                <ul class="list-inline m-b-0 ml-auto">
+                                    <li>
+                                        <h6 class="text-muted text-success"><i
+                                                    class="fa fa-circle font-10 m-r-10 "></i>Delivered</h6></li>
+                                    <li>
+                                        <h6 class="text-muted text-info"><i class="fa fa-circle font-10 m-r-10"></i>Total Sent</h6></li>
+                                </ul>
+                            </div>
+                            <div class="website-visitor p-relative m-t-30" style="width:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
                 <!-- ============================================================== -->
                 <!-- visit charts-->
                 <!-- ============================================================== -->
                 <div class="col-lg-3 col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title"><span class="lstick"></span>Visit Separation</h4>
-                            <div id="visitor" style="height:250px; width:100%;"></div>
+                            <h4 class="card-title"><span class="lstick"></span>Monthly Tracker</h4>
+                            <div id="trackings" style="height:250px; width:100%;"></div>
                             <table class="table vm font-14">
                                 <tr>
-                                    <td class="b-0">Mobile</td>
-                                    <td class="text-right font-medium b-0">38.5%</td>
+                                    <td class="b-0" style="color: #398bf7;">Sent</td>
+                                    <td class="text-right font-medium b-0 sent_sum"></td>
                                 </tr>
                                 <tr>
-                                    <td>Tablet</td>
-                                    <td class="text-right font-medium">30.8%</td>
+                                    <td style="color: #398bf7;">Opened</td>
+                                    <td class="text-right font-medium opened_sum"></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #398bf7">Delivered</td>
+                                    <td class="text-right font-medium delievered_sum"></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #398bf7">Clicked</td>
+                                    <td class="text-right font-medium clicked_sum"></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #1ce59b;">Bounces</td>
+                                    <td class="text-right font-medium bounced_sum"></td>
                                 </tr>
                             </table>
                         </div>
@@ -186,11 +277,13 @@
             <div class="row">
                 <div class="col-lg-4 col-xlg-3">
                     <div class="card">
-                        <img class="card-img-top img-responsive" src="../assets/images/users/1.gif" alt="Card image cap">
+                        <img class="card-img-top img-responsive" src="../assets/images/logo-blue2.png"
+                             alt="Card image cap">
                         <div class="card-body">
                             <h3 class="font-normal">Test Blog Article to be changed in Version 2.0.0 </h3>
                             <span class="label label-info label-rounded">Technology</span>
-                            <p class="m-b-0 m-t-20">Titudin venenatis ipsum aciat. Vestibulum ullamcorper quam. nenatis ipsum ac feugiat. Ibulum ullamcorper</p>
+                            <p class="m-b-0 m-t-20">Titudin venenatis ipsum aciat. Vestibulum ullamcorper quam. nenatis
+                                ipsum ac feugiat. Ibulum ullamcorper</p>
                             <div class="d-flex m-t-20">
                                 <button class="btn p-l-0 btn-link ">Read more</button>
                                 <div class="ml-auto align-self-center">
@@ -201,27 +294,55 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-8 col-xlg-9">
+
+
+                <!-- ============================================================== -->
+                <!-- Opened overview chart -->
+                <!-- ============================================================== -->
+
+                <div class="col-lg-8 col-md-12 col-xlg-9">
                     <div class="card">
                         <div class="card-body">
-                            <div class="d-flex">
-                                <h4 class="card-title"><span class="lstick"></span>Sent / Opened Comparison</h4>
-                                <ul class="list-inline m-b-0 ml-auto">
-                                    <li>
-                                        <h6 class="text-muted text-success"><i class="fa fa-circle font-10 m-r-10 "></i>total Sent</h6> </li>
-                                    <li>
-                                        <h6 class="text-muted text-info"><i class="fa fa-circle font-10 m-r-10"></i>Opened Emails</h6> </li>
-                                </ul>
+                            <div class="bg-theme stats-bar">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="p-20 active">
+                                            <h6 class="text-white">Total Sent (per 30 days)</h6>
+                                            <h3 class="text-white m-b-0 stat-sent"></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="p-20">
+                                            <h6 class="text-white">Delivered</h6>
+                                            <h3 class="text-white m-b-0 stat-delivered"></h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="p-20">
+                                            <h6 class="text-white">Bounced</h6>
+                                            <h3 class="text-white m-b-0 stat-bounced"></h3>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="website-visitor p-relative m-t-30" style="width:100%;"></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div>
+                                    <h3 class="card-title m-b-5"><span class="lstick"></span>Tracking Overview </h3>
+                                </div>
+                                <div class="ml-auto">
+                                </div>
+                            </div>
+                            <div id="sales-overview2" class="p-relative" style="height:360px;"></div>
                         </div>
                     </div>
                 </div>
+
+                <!-- ============================================================== -->
+                <!-- End Page Content -->
+                <!-- ============================================================== -->
             </div>
-            <!-- ============================================================== -->
-            <!-- End Page Content -->
-            <!-- ============================================================== -->
-        </div>
         {{ block('reusable_footer') }}
     </div>
     <!-- ============================================================== -->

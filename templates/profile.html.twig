@@ -57,7 +57,7 @@
                                 <h6 class="card-subtitle">{{ user.about }}</h6>
                                 <div class="row text-center justify-content-md-center">
                                     <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-medium">254</font></a></div>
-                                    <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-medium">54</font></a></div>
+                                    <div class="col-4" ><a href="/lists" class="link"><i class="icon-layers"></i> <font class="font-medium">{% if lists is empty %}0{% else %}{{ lists }} {% endif %}</font></a></div>
                                 </div>
                             </center>
                         </div>

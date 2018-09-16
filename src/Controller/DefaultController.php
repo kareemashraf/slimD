@@ -66,11 +66,15 @@ class DefaultController extends Controller
      */
     public function profile(Request $request)
     {
+        $entityManager = $this->getDoctrine()->getManager();
         self::post_profile($request);
 
         $usr= $this->get('security.token_storage')->getToken()->getUser();
+        $lists = $entityManager->getRepository(Emaillist::class)->findByUserId($usr->getId());
+
         return $this->render('profile.html.twig', array(
             'user' => $usr,
+            'lists' => count($lists), // number of how many lists the user has
         ));
 
     }

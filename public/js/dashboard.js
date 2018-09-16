@@ -78,16 +78,13 @@ $('#stop').click(function(){
 
 
 //Tracking ajax
-var userid = $(this).attr("data-user-id");
-var year = $('.year').val();
 var month = [];
-var total =[];
+
 
 //ajax the opened emails
 $.ajax({
-    url:"/ajax/opened_email",
+    url:"/ajax/tracking",
     type: "POST",
-    data: {"userid": userid, "year":year,"method":"opened" },
     async: true,
     success: function (data)
     {
@@ -105,24 +102,25 @@ $('.year').on('change',function(){
 });
 
 function dashboard(data) {
-    month.unshift('start');
-    total.unshift('0');
-    $.each( data, function( key, value ) {
-        month.push(value.month);
-        total.push(value.total);
-    });
+    month = formatDateArray(data[1]["Timestamps"]);
 
+    var sent = data[0]["Values"];
+    var opened = data[1]["Values"];
+    var delivered = data[2]["Values"];
+    var clicked = data[3]["Values"];
+    var bounced = data[4]["Values"];
 
-    var max = Math.max.apply(Math,total)+2 ;
+    var max = Math.max.apply(Math,opened)+2 ;
+
 
     "use strict";
     // ============================================================== 
     // Opened Email Tracking
     // ============================================================== 
      new Chartist.Line('#sales-overview2', {
-        labels: month
+        labels: month.reverse()
         , series: [
-          {meta:"Opened Emails", data: total}
+          {meta:"Opened Emails", data: opened}
       ]
     }, {
         low: 0
@@ -156,17 +154,34 @@ function dashboard(data) {
         
     });
      // ============================================================== 
-    // Visitor
+    // Tracker Donut chart
     // ============================================================== 
-    
+
+    $('.stat-sent').html(sent.reduce(add, 0));
+    $('.stat-delivered').html(delivered.reduce(add, 0) );
+    $('.stat-bounced').html(bounced.reduce(add, 0) );
+
+    $('.track-delivered').html(((delivered.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(1) + " %");
+    $('.track-opened').html(((opened.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(1) + " %");
+    $('.track-clicks').html(((clicked.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(1) + " %");
+    $('.track-bounces').html(((bounced.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(1) + " %");
+
+    $('.sent_sum').html(sent.reduce(add, 0));
+    $('.opened_sum').html(opened.reduce(add, 0));
+    $('.delievered_sum').html(delivered.reduce(add, 0));
+    $('.clicked_sum').html(clicked.reduce(add, 0));
+    $('.bounced_sum').html(bounced.reduce(add, 0));
+
+
     var chart = c3.generate({
-        bindto: '#visitor',
+        bindto: '#trackings',
         data: {
             columns: [
-                ['Other', 30],
-                ['Desktop', 10],
-                ['Tablet', 40],
-                ['Mobile', 50],
+                ['Sent', sent.reduce(add, 0)],
+                ['Opened', opened.reduce(add, 0)],
+                ['Delievered', delivered.reduce(add, 0)],
+                ['Clicked', clicked.reduce(add, 0)],
+                ['Bounced', bounced.reduce(add, 0)],
             ],
             
             type : 'donut',
@@ -178,7 +193,7 @@ function dashboard(data) {
             label: {
                 show: false
               },
-            title:"Visits",
+            title:"Tracking",
             width:20,
             
         },
@@ -189,7 +204,11 @@ function dashboard(data) {
           //or hide: ['data1', 'data2']
         },
         color: {
-              pattern: ['#e6f1ec','#745af2', '#26c6da', '#1e88e5']
+              pattern: ['#398bf7',
+                  '#7e49f2',
+                  '#26c6da',
+                  '#9ab2e5',
+                  '#1ce59b']
         }
     });
   	  
@@ -197,37 +216,20 @@ function dashboard(data) {
     // Sent / opened Comparison
     // ==============================================================
 
-var sentMonthly = [];
-var sentTotal = [];
+    var max = Math.max.apply(Math,sent)+2 ;
 
-
-    //ajax the sent emails
-    $.ajax({
-        url:"/ajax/opened_email",
-        type: "POST",
-        data: {"userid": userid, "year":year,"method":"sent" },
-        async: true,
-        success: function (data)
-        {
-            sentMonthly.unshift('start');
-            sentTotal.unshift('0');
-            $.each( data, function( key, value ) {
-                sentMonthly.push(value.month);
-                sentTotal.push(value.total);
-            });
-        var sentMax = Math.max.apply(Math,sentTotal)+2;
             // ==============================================================
             // Sent / opened Comparison inside Ajax Success
             // ==============================================================
 
             var chart = new Chartist.Line('.website-visitor', {
-                labels: sentMonthly,
+                labels: formatDateArray(data[0]["Timestamps"]).reverse(),
                 series: [
-                    sentTotal // to be total sent emails per user and per month
-                    , total
+                    delivered.reverse()
+                    , sent.reverse()
                 ]}, {
                 low: 0,
-                high: sentMax,
+                high: max,
                 showArea: true,
                 fullWidth: true,
                 plugins: [
@@ -276,14 +278,22 @@ var sentTotal = [];
             // End the Sent/opened Comparison in Ajax
             // ==============================================================
 
-        },
-        error: function(xhr, textStatus, errorThrown){
-            console.log('Tracking request failed');
-        }
-    });
+
 
 
 
 
 };
 
+function add(a, b) {
+    return a + b;
+}
+
+function formatDateArray(data) {
+    var month= [];
+    $.each( data, function( key, value ) {
+        month.push($.format.date(value , "MMM-d"));
+    });
+
+    return month
+}

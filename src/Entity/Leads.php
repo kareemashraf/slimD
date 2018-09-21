@@ -42,8 +42,14 @@ class Leads
      */
     private $sent;
 
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
     public function __construct()
     {
+        $this->isActive = true;
         $this->sent = false;
     }
 
@@ -119,6 +125,23 @@ class Leads
     /**
      * @return mixed
      */
+    public function getisActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+
+    /**
+     * @return mixed
+     */
     public function getSent()
     {
         return $this->sent;
@@ -131,7 +154,6 @@ class Leads
     {
         $this->sent = $sent;
     }
-
 
 
 

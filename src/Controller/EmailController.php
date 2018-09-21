@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use App\Entity\Leads;
 use App\Entity\Track;
 use App\Entity\Emaillist;
@@ -19,7 +20,12 @@ use Aws\Ses\SesClient;
 
 class EmailController extends Controller
 {
+    private $logger;
 
+    public function __construct( LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
 
     public function history($params)
     {
@@ -72,6 +78,7 @@ class EmailController extends Controller
             $listId = $list->getList();
             $sent_leads = $entityManager->getRepository(Leads::class)->findByListIdnotSent($listId);
 
+            $this->logger->info('Emailing Campaign "'.$list->getId().'" has Started');
 
             foreach ($sent_leads as $key2 => $lead) {
                 if ($lead->getSent() == false) {
@@ -88,7 +95,7 @@ class EmailController extends Controller
                     $message_html = str_replace($old_message, $new_message, $list->getMessagehtml());
                     $message_text = strip_tags($message_html);
 
-//                    $tracker = '<img src="http://mailgram.online/pixel/' . $list->getId() . '/' . $list->getUserId() . '/' . $email . '?image=tracking.gif" alt="">';
+                    $tracker = '<img src="http://mailgram.online/pixel/' . $list->getId() . '/' . $list->getUserId() . '/' . $email . '?image=tracking.gif" alt="">';
 
                     $sender_email = '"' . $sender_name . '" <' . $from . '>';
                     $recipient_emails = [$email];
@@ -98,8 +105,7 @@ class EmailController extends Controller
                     $html_body = $message_html;
                     $char_set = 'UTF-8';
 
-                    //send email here
-
+                    //start sending email
 
                     try {
                         $result = $SesClient->sendEmail([
@@ -112,7 +118,7 @@ class EmailController extends Controller
                                 'Body' => [
                                     'Html' => [
                                         'Charset' => $char_set,
-                                        'Data' => $html_body,
+                                        'Data' => $html_body.$tracker,
                                     ],
                                     'Text' => [
                                         'Charset' => $char_set,
@@ -127,33 +133,38 @@ class EmailController extends Controller
 
                             'ConfigurationSetName' => $configuration_set,
                         ]);
-                        var_dump($result);
+
                         $messageId = $result['MessageId'];
                         $messageStatus = $result['@metadata']['statusCode'];
 
                         if ($messageStatus == 200) {
+                            $this->logger->info($key2.' Email sent to '.$recipient_emails[0].' list ID: '.$list->getId().' from: '.$from);
                             $tracking = new Track();
                             $tracking->setUserId($listId->getUserId());
                             $tracking->setCampaignId($list->getId());
                             $tracking->setSentTo($email);
-                            //todo: store the $messageId
+                            $tracking->setMessageId($messageId);
 
                             $lead->setSent('1'); // set sent true
                             $entityManager->persist($lead);
                             $entityManager->persist($tracking);
                             $entityManager->flush();
                         }else{
-                            //message is not sent
-                            //TODO: Delete the lead;
+                            $this->logger->info($key2.' Email couldnt be sent to '.$recipient_emails.' list ID: '.$list->getId().' from: '.$sender_email.' and email is deleted from the list');
+                            $lead->setIsActive(0); //deactivate the lead
+                            $entityManager->persist($lead);
+                            $entityManager->flush();
                         }
 
                     } catch (AwsException $e) {
-                        // output error message if fails
-                        echo $e->getMessage();
-                        echo("The email was not sent. Error message: " . $e->getAwsErrorMessage() . "\n");
-                        echo "\n";
+                        $lead->setIsActive(0); //deactivate the lead
+                        $entityManager->persist($lead);
+                        $entityManager->flush();
+
+                        $this->logger->info($e->getMessage());
+                        $this->logger->info("The email was not sent. Error message: " . $e->getAwsErrorMessage() . "\n");
                     }
-                    //end send email
+                    //end sending the email
 
                 }
 
@@ -162,6 +173,7 @@ class EmailController extends Controller
 
             $not_sent_leads = $entityManager->getRepository(Leads::class)->findByListIdnotSent($listId);
             if (empty($not_sent_leads)) {
+                $this->logger->info('Emailing Campaign "'.$list->getId().'" has finished , resetting leeds to 0 ');
                 $leads = $entityManager->getRepository(Leads::class)->findByListIdAll($listId);
                 foreach ($leads as  $lead) {
                     $lead->setSent('0');

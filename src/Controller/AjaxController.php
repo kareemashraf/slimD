@@ -208,7 +208,7 @@ class AjaxController extends Controller
 
         $client = new CloudWatchClient([
             'region' => 'eu-west-1',
-            'version' => '2010-08-01', // 'latest' ?
+            'version' => 'latest', // 2010-08-01 ?
             'credentials' => [
                 'key' => $key,
                 'secret' => $secret,

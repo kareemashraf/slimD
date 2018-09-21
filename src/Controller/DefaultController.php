@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,12 +32,13 @@ use Swift_Message;
 class DefaultController extends Controller
 {
 
-    // ...
     private $encoder;
+    private $logger;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordEncoderInterface $encoder, LoggerInterface $logger)
     {
         $this->encoder = $encoder;
+        $this->logger = $logger;
     }
 
 
@@ -72,9 +74,18 @@ class DefaultController extends Controller
         $usr= $this->get('security.token_storage')->getToken()->getUser();
         $lists = $entityManager->getRepository(Emaillist::class)->findByUserId($usr->getId());
 
+        $leads = array();
+        foreach ($lists as $key => $list){
+            $leads[] = $list->getId();
+        }
+
+        $leads = $entityManager->getRepository(Leads::class)->findCountLeadsByListid($leads);
+        $this->logger->info('Loading the users profile');
+
         return $this->render('profile.html.twig', array(
             'user' => $usr,
             'lists' => count($lists), // number of how many lists the user has
+            'leads' => count($leads), // number of how many leeds the user has
         ));
 
     }
@@ -311,6 +322,8 @@ class DefaultController extends Controller
             $client->setContainer($this->container);
             $client->history($params);
 
+            $this->logger->info('Emailing Campaign has been set for list '.$list_id.' by the userid '.$usr->getId(). ' Good Luck!');
+
             return $this->redirectToRoute('app_default_index'); // return to homepage
         }
 
@@ -342,7 +355,6 @@ class DefaultController extends Controller
      */
     public function terms_and_conditions()
     {
-
         $usr= $this->get('security.token_storage')->getToken()->getUser();
 
         return $this->render('terms-and-conditions.html.twig', array(
@@ -358,8 +370,8 @@ class DefaultController extends Controller
     public function pixel($id = NULL, $userid = NULL, $email = NULL)
     {
 
-//        header('Content-Type: image/gif');
-//        readfile('assets/images/tracking.gif');
+        header('Content-Type: image/gif');
+        readfile('assets/images/tracking.gif');
 
         $campaignId = $id;
 

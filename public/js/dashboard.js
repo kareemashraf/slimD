@@ -97,9 +97,6 @@ $.ajax({
 });
 
 
-$('.year').on('change',function(){
-    location.href='/';
-});
 
 function dashboard(data) {
     month = formatDateArray(data[1]["Timestamps"]);
@@ -115,12 +112,12 @@ function dashboard(data) {
 
     "use strict";
     // ============================================================== 
-    // Opened Email Tracking
+    // Opened Email Tracking https://gionkunz.github.io/chartist-js/
     // ============================================================== 
      new Chartist.Line('#sales-overview2', {
         labels: month.reverse()
         , series: [
-          {meta:"Opened Emails", data: opened}
+          {meta:"Opened Emails", data: opened.reverse()}
       ]
     }, {
         low: 0
@@ -213,13 +210,13 @@ function dashboard(data) {
     });
   	  
     // ============================================================== 
-    // Sent / opened Comparison
+    // Sent / opened Comparison   https://gionkunz.github.io/chartist-js/
     // ==============================================================
 
-    var max = Math.max.apply(Math,sent)+2 ;
+    var maxSent = Math.max.apply(Math,sent);
 
             // ==============================================================
-            // Sent / opened Comparison inside Ajax Success
+            // Sent / delivered Comparison inside Ajax Success
             // ==============================================================
 
             var chart = new Chartist.Line('.website-visitor', {
@@ -229,7 +226,7 @@ function dashboard(data) {
                     , sent.reverse()
                 ]}, {
                 low: 0,
-                high: max,
+                high: maxSent,
                 showArea: true,
                 fullWidth: true,
                 plugins: [

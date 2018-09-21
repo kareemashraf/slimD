@@ -28,6 +28,7 @@ class LeadsRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('l')
             ->andWhere('l.list_id = :val')
             ->andWhere('l.sent = 0')
+            ->andWhere('l.isActive = 1')
             ->setParameter('val', $value)
             ->orderBy('l.id', 'ASC')
             ->setMaxResults(500) // for Cronjob max 500 leads per hour
@@ -40,6 +41,21 @@ class LeadsRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('l')
             ->andWhere('l.list_id = :val')
+            ->andWhere('l.isActive = 1')
+            ->setParameter('val', $value)
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
+
+    public function findCountLeadsByListid($value)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.list_id in (:val)')
+            ->andWhere('l.isActive = 1')
             ->setParameter('val', $value)
             ->orderBy('l.id', 'ASC')
             ->getQuery()

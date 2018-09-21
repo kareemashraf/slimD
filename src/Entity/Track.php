@@ -55,6 +55,11 @@ class Track
     private $opened;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $message_id;
+
+    /**
      * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
@@ -205,6 +210,23 @@ class Track
     {
         $this->sent_date = $sent_date;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMessageId()
+    {
+        return $this->message_id;
+    }
+
+    /**
+     * @param mixed $message_id
+     */
+    public function setMessageId($message_id)
+    {
+        $this->message_id = $message_id;
+    }
+
 
     /**
      * @return mixed

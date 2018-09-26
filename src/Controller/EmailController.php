@@ -132,6 +132,13 @@ class EmailController extends Controller
                             ],
 
                             'ConfigurationSetName' => $configuration_set,
+                            'Tags' => [
+                                [
+                                    'Name' => 'user', // REQUIRED
+                                    'Value' => $list->getUserId(), // REQUIRED
+                                ],
+                            ]
+
                         ]);
 
                         $messageId = $result['MessageId'];

@@ -1,0 +1,21 @@
+{% extends 'base-dashboard.html.twig' %}
+
+{% block body %}
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<section id="wrapper" class="error-page">
+    <div class="error-box">
+        <div class="error-body text-center">
+            <h2>Unsubscribe!</h2>
+            <h3 class="text-uppercase">you will be missed..</h3><i class="em em-disappointed_relieved"></i>
+            <p class="text-muted m-t-30 m-b-30">
+                <input type="email" class="form-control" placeholder="Email Address" aria-label="Email" aria-describedby="basic-addon1" value="{{ email }}" style="width: 50%;">
+            </p>
+            <a href="#" class="btn btn-info btn-rounded waves-effect waves-light m-b-40">It's over between us! <i class="em em-confounded"></i> </a>
+        </div>
+        <footer class="footer text-center">Mailgram © 2018 all rights reserved.</footer>
+    </div>
+</section>
+
+{% endblock %}

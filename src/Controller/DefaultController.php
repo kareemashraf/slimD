@@ -365,6 +365,19 @@ class DefaultController extends Controller
 
 
     /**
+     * @Route("/unsubscribe/{email}")
+     */
+    public function unsubscribe($email = NULL)
+    {
+
+        return $this->render('unsubscribe.html.twig', array(
+            'email' => $email
+        ));
+
+    }
+
+
+    /**
      * @Route("/pixel/{id}/{userid}/{email}")
      */
     public function pixel($id = NULL, $userid = NULL, $email = NULL)

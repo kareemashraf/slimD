@@ -76,6 +76,33 @@ $('#stop').click(function(){
 
 });
 
+//unsubscribe button
+$('.unsubscribe-btn').click(function(){
+    var email = $('.email-input').val();
+    if(email) {
+        if (confirm('Are you sure you want to unsubscribe your Email?')) {
+            $.ajax({
+                url: "/ajax/unsubscribe",
+                type: "POST",
+                data: {"email": email},
+                async: true,
+                success: function (data) {
+                    $('.error-message').html(data);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('request failed');
+                }
+            });
+
+
+        }
+    }else{
+        $('.error-message').html('<div class="alert alert-danger"><strong>hmm..</strong> Please Fill in your E-mail address to unsubscribe.</div>');
+    }
+
+});
+
+
 
 //Tracking ajax
 var month = [];
@@ -169,6 +196,10 @@ function dashboard(data) {
     $('.clicked_sum').html(clicked.reduce(add, 0));
     $('.bounced_sum').html(bounced.reduce(add, 0));
 
+    $('#bounced_sum_bar').html('<div class="progress"><div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+((bounced.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'" aria-valuemin="0" aria-valuemax="100" style="width:'+((bounced.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'%">'+((bounced.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'%</div></div>');
+    $('#clicked_sum_bar').html('<div class="progress"><div class="progress-bar bg-secondary progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+((clicked.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'" aria-valuemin="0" aria-valuemax="100" style="width:'+((clicked.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'%">'+((clicked.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'%</div></div>');
+    $('#delivered_sum_bar').html('<div class="progress"><div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+((delivered.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'" aria-valuemin="0" aria-valuemax="100" style="width:'+((delivered.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'%">'+((delivered.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'%</div></div>');
+    $('#opened_sum_bar').html('<div class="progress"><div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+((opened.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'" aria-valuemin="0" aria-valuemax="100" style="width:'+((opened.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'%">'+((opened.reduce(add, 0)/sent.reduce(add, 0))*100).toFixed(0)+'%</div></div>');
 
     var chart = c3.generate({
         bindto: '#trackings',
@@ -294,3 +325,4 @@ function formatDateArray(data) {
 
     return month
 }
+

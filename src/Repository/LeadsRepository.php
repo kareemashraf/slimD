@@ -63,5 +63,18 @@ class LeadsRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findByEmail($value)
+        {
+            return $this->createQueryBuilder('l')
+                ->andWhere('l.email = :val')
+                ->andWhere('l.isActive = 1')
+                ->setParameter('val', $value)
+                ->orderBy('l.id', 'ASC')
+                ->getQuery()
+                ->getResult()
+                ;
+        }
+
+
 
 }

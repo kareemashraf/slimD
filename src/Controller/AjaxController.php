@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\History;
+use App\Entity\Leads;
 use App\Entity\Track;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +43,31 @@ class AjaxController extends Controller
         } else {
             return false; //todo return false in v 2.0
         }
+
+    }
+
+
+    /**
+     * @Route("/ajax/unsubscribe")
+     */
+    public function unsubscribe(Request $request){
+        $email = $request->request->get("email");
+        $entityManager = $this->getDoctrine()->getManager();
+        $leads = $entityManager->getRepository(Leads::class)->findByEmail($email);
+
+        if (empty($leads)){
+            return new Response('<div class="alert alert-warning"><strong>Warning!</strong> this E-mail address doesnt exist.</div>');
+        }
+        else{
+            foreach ($leads as $lead){
+                $lead->setIsActive(false); // deactivate lead
+                $entityManager->persist($lead);
+                $entityManager->flush();
+            }
+            return new Response('<div class="alert alert-success"><strong>Success!</strong> you have successfully <b>unsubscribed</b> </div>');
+        }
+
+
 
     }
 

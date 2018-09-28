@@ -19,14 +19,16 @@ Error Page
 .error-box {
   height: 100%;
   position: fixed;
-  width: 100%; }
+  width: 100%;
+}
   .error-box .footer {
     width: 100%;
     left: 0px;
     right: 0px; }
 
 .error-body {
-  padding-top: 5%; }
+  padding-top: 5%;
+}
   .error-body h1 {
     font-size: 210px;
     font-weight: 900;
@@ -34,8 +36,42 @@ Error Page
     line-height: 210px;
   }
 .error-body h2 {
-  font-size: 110px;
+  font-size: 100px;
   font-weight: 500;
   text-shadow: 4px 4px 0 #ffffff, 6px 6px 0 #263238;
-  line-height: 110px;
+  line-height: 100px;
+}
+
+.email-input{
+  width: 30%;
+}
+
+.error-message{
+    width: 50%;
+    margin: auto;
+}
+
+@media only screen and (max-width: 700px) {
+    .error-body {
+        padding-top: 30%;
+    }
+  .error-body h1 {
+    font-size: 100%;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 #ffffff, 3px 3px 0 #263238;
+    line-height: 100%;
+  }
+  .error-body h2 {
+    font-size: 200%;
+    font-weight: 700;
+    text-shadow: 2px 2px 0 #ffffff, 3px 3px 0 #263238;
+    line-height: 100%;
+  }
+  .email-input{
+    width: 90%;
+  }
+  .error-message{
+    width: 70%;
+    margin: auto;
+  }
 }

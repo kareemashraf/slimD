@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Aws\Sqs\SqsClient;
 use Psr\Log\LoggerInterface;
 use App\Entity\Leads;
 use App\Entity\Track;
@@ -141,6 +143,7 @@ class EmailController extends Controller
 
                         ]);
 
+
                         $messageId = $result['MessageId'];
                         $messageStatus = $result['@metadata']['statusCode'];
 
@@ -152,10 +155,11 @@ class EmailController extends Controller
                             $tracking->setSentTo($email);
                             $tracking->setMessageId($messageId);
 
-                            $lead->setSent('1'); // set sent true
+                            $lead->setSent(true); // set sent true
                             $entityManager->persist($lead);
                             $entityManager->persist($tracking);
                             $entityManager->flush();
+
                         }else{
                             $this->logger->info($key2.' Email couldnt be sent to '.$recipient_emails.' list ID: '.$list->getId().' from: '.$sender_email.' and email is deleted from the list');
                             $lead->setIsActive(0); //deactivate the lead
@@ -163,11 +167,9 @@ class EmailController extends Controller
                             $entityManager->flush();
                         }
 
-                    } catch (AwsException $e) {
-                        $lead->setIsActive(0); //deactivate the lead
-                        $entityManager->persist($lead);
-                        $entityManager->flush();
+                        $this->Bounces_handler(); //deal with the bounces if any
 
+                    } catch (AwsException $e) {
                         $this->logger->info($e->getMessage());
                         $this->logger->info("The email was not sent. Error message: " . $e->getAwsErrorMessage() . "\n");
                     }
@@ -190,11 +192,66 @@ class EmailController extends Controller
                     $entityManager->flush();
                 }
             }
-
-
         }
+        return new Response('Done!');
+    }
 
+    /**
+     * @Route("/bounce")
+     */
+    public function Bounces_handler(){
 
+        $key = ''; //key
+        $secret = ''; //secret
+
+        $client = new SqsClient([
+            'region' => 'eu-west-1',
+            'version' => 'latest',
+            'credentials' => [
+                'key' => $key,
+                'secret' => $secret,
+            ],
+        ]);
+
+        try {
+            $result = $client->receiveMessage([
+                'QueueUrl' => 'https://sqs.eu-west-1.amazonaws.com/319238705108/Notification', // REQUIRED
+            ]);
+
+            if ($result['Messages']) {
+                $ReceiptHandle = $result['Messages'][0]['ReceiptHandle'];
+                $sqsResponse = json_decode($result['Messages'][0]['Body']);
+                $sqsMessage = json_decode($sqsResponse->Message);
+                $bouncedEmail = $sqsMessage->mail->destination[0];
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $leads = $entityManager->getRepository(Leads::class)->findByEmail($bouncedEmail);
+
+                $this->logger->info('Bounced Email Detected as ' . $bouncedEmail);
+
+                if ($leads) {
+                    foreach ($leads as $lead) {
+                        $lead->setIsActive(false); // deactivate the bounced lead
+                        $entityManager->persist($lead);
+                        $entityManager->flush();
+                        $this->logger->info('Bounced Email ' . $bouncedEmail . ' has been removed');
+                    }
+
+                } else {
+                    $this->logger->info('No Bounces detected');
+                }
+
+                // delete sqs message
+                $client->deleteMessage([
+                    'QueueUrl' => 'https://sqs.eu-west-1.amazonaws.com/319238705108/Notification', // REQUIRED
+                    'ReceiptHandle' => $ReceiptHandle, // REQUIRED
+                ]);
+            }
+        } catch (AwsException $e) {
+
+            $this->logger->info($e->getMessage());
+            $this->logger->info("there was an Error with the SQS message. Error message: " . $e->getAwsErrorMessage() . "\n");
+        }
     }
 
 

@@ -14,6 +14,7 @@ use SimpleEmailService;
 use Aws\CloudWatch\CloudWatchClient;
 use Aws\Exception\AwsException;
 use Aws\Ses\SesClient;
+use Aws\Sqs\SqsClient;
 
 class AjaxController extends Controller
 {
@@ -117,7 +118,7 @@ class AjaxController extends Controller
 
 
     /**
-     * @Route("/send_email", name="send email")
+     * @Route("/ajax/test", name="send email")
      */
     public function test()
     {
@@ -240,6 +241,7 @@ class AjaxController extends Controller
                 'secret' => $secret,
             ],
         ]);
+
 
         $result = $client->getMetricData([
             'EndTime' => strtotime(date("Y-m-d H:i:s")), // REQUIRED

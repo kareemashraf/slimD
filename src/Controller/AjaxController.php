@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Entity\History;
 use App\Entity\Leads;
 use App\Entity\Track;
@@ -123,7 +124,6 @@ class AjaxController extends Controller
     public function test()
     {
 
-
 //        $trigger_error = true;
 //        $region_endpoint = SimpleEmailService::AWS_EU_WEST1;
 //        $ses = new SimpleEmailService('', '', $region_endpoint,$trigger_error);
@@ -230,8 +230,8 @@ class AjaxController extends Controller
      */
     public function tracking()
     {
-        $key = ''; //key
-        $secret = ''; //secret
+        $key = getenv('AWS_KEY'); //key
+        $secret = getenv('AWS_SECRET'); //secret
 
         $client = new CloudWatchClient([
             'region' => 'eu-west-1',

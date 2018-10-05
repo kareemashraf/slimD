@@ -63,8 +63,8 @@ class EmailController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $activelists = $entityManager->getRepository(History::class)->findOneByActive();
 
-        $key = ''; //key
-        $secret = ''; //secret
+        $key = getenv('AWS_KEY'); //key
+        $secret = getenv('AWS_SECRET'); //secret
 
         $SesClient = new SesClient([
             'region' => 'eu-west-1',
@@ -201,8 +201,8 @@ class EmailController extends Controller
      */
     public function Bounces_handler(){
 
-        $key = ''; //key
-        $secret = ''; //secret
+        $key = getenv('AWS_KEY'); //key
+        $secret = getenv('AWS_SECRET'); //secret
 
         $client = new SqsClient([
             'region' => 'eu-west-1',

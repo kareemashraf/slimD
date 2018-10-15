@@ -257,7 +257,7 @@ function dashboard(data) {
                     , sent.reverse()
                 ]}, {
                 low: 0,
-                high: maxSent,
+                high: maxSent+1,
                 showArea: true,
                 fullWidth: true,
                 plugins: [

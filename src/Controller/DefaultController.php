@@ -318,7 +318,7 @@ class DefaultController extends Controller
             $params['list_id']= $list_id;
             $params['user'] = $usr;
 
-            $client = new EmailController();
+            $client = new EmailController($this->logger);
             $client->setContainer($this->container);
             $client->history($params);
 

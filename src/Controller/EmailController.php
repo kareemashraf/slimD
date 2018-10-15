@@ -222,30 +222,32 @@ class EmailController extends Controller
                 $ReceiptHandle = $result['Messages'][0]['ReceiptHandle'];
                 $sqsResponse = json_decode($result['Messages'][0]['Body']);
                 $sqsMessage = json_decode($sqsResponse->Message);
-                $bouncedEmail = $sqsMessage->mail->destination[0];
+                if ($sqsMessage->mail) {
+                    $bouncedEmail = $sqsMessage->mail->destination[0];
 
-                $entityManager = $this->getDoctrine()->getManager();
-                $leads = $entityManager->getRepository(Leads::class)->findByEmail($bouncedEmail);
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $leads = $entityManager->getRepository(Leads::class)->findByEmail($bouncedEmail);
 
-                $this->logger->info('Bounced Email Detected as ' . $bouncedEmail);
+                    $this->logger->info('Bounced Email Detected as ' . $bouncedEmail);
 
-                if ($leads) {
-                    foreach ($leads as $lead) {
-                        $lead->setIsActive(false); // deactivate the bounced lead
-                        $entityManager->persist($lead);
-                        $entityManager->flush();
-                        $this->logger->info('Bounced Email ' . $bouncedEmail . ' has been removed');
+                    if ($leads) {
+                        foreach ($leads as $lead) {
+                            $lead->setIsActive(false); // deactivate the bounced lead
+                            $entityManager->persist($lead);
+                            $entityManager->flush();
+                            $this->logger->info('Bounced Email ' . $bouncedEmail . ' has been removed');
+                        }
+
+                    } else {
+                        $this->logger->info('No Bounces detected');
                     }
 
-                } else {
-                    $this->logger->info('No Bounces detected');
+                    // delete sqs message
+                    $client->deleteMessage([
+                        'QueueUrl' => 'https://sqs.eu-west-1.amazonaws.com/319238705108/Notification', // REQUIRED
+                        'ReceiptHandle' => $ReceiptHandle, // REQUIRED
+                    ]);
                 }
-
-                // delete sqs message
-                $client->deleteMessage([
-                    'QueueUrl' => 'https://sqs.eu-west-1.amazonaws.com/319238705108/Notification', // REQUIRED
-                    'ReceiptHandle' => $ReceiptHandle, // REQUIRED
-                ]);
             }
         } catch (AwsException $e) {
 

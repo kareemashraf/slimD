@@ -193,6 +193,8 @@ class EmailController extends Controller
                 }
             }
         }
+
+        $this->logger->info('Done!');
         return new Response('Done!');
     }
 

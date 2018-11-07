@@ -31,7 +31,7 @@ class LeadsRepository extends ServiceEntityRepository
             ->andWhere('l.isActive = 1')
             ->setParameter('val', $value)
             ->orderBy('l.id', 'ASC')
-            ->setMaxResults(1) // for Cronjob max 1 leads per 20 seconds = 3 each minue = 180 per hour.
+            ->setMaxResults(3) // for Cronjob  3 each minute = 180 per hour.
             ->getQuery()
             ->getResult()
         ;

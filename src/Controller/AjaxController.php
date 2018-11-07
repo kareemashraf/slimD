@@ -242,6 +242,7 @@ class AjaxController extends Controller
             ],
         ]);
 
+//        $result = $client->getSendStatistics([]); //works with SES client
 
         $result = $client->getMetricData([
             'EndTime' => strtotime(date("Y-m-d H:i:s")), // REQUIRED

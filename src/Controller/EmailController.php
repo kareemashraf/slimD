@@ -51,7 +51,7 @@ class EmailController extends Controller
             $entityManager->flush();
         }
 
-        $this->send();
+//        $this->send();
     }
 
     /**

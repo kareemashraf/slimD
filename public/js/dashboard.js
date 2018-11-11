@@ -76,6 +76,31 @@ $('#stop').click(function(){
 
 });
 
+//Resume Button
+$('#resume ,this').click(function(){
+
+    if (confirm('Are you sure you want to Continue the selected emailing campaign ?')) {
+        var id = $(this).attr("data-orderid");
+        var userid = $(this).attr("data-user-id");
+        $.ajax({
+            url:"/ajax/resume",
+            type: "POST",
+            data: {"id": id,"userid": userid },
+            async: true,
+            success: function (data)
+            {
+                location.href='/';
+            },
+            error: function(xhr, textStatus, errorThrown){
+                console.log('request failed');
+            }
+        });
+
+
+    }
+
+});
+
 //unsubscribe button
 $('.unsubscribe-btn').click(function(){
     var email = $('.email-input').val();

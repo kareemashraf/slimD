@@ -27,7 +27,7 @@ class HistoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('h')
             ->andWhere('h.isActive = :val')
-            ->setParameter('val', 1)
+            ->setParameter('val', '1')
             ->orderBy('h.id', 'ASC')
             ->setMaxResults(1)
             ->getQuery()

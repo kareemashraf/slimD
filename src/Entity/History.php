@@ -63,13 +63,13 @@ class History
     private $order_date;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="is_active", type="string")
      */
     private $isActive;
 
     public function __construct()
     {
-        $this->isActive = true;
+        $this->isActive = '1';
         $this->order_date = new \DateTime();
     }
 
@@ -221,6 +221,8 @@ class History
     {
         $this->isActive = $isActive;
     }
+
+
 
 
 

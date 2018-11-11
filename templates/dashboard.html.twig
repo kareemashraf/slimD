@@ -224,7 +224,9 @@
                                                     {#<td style="color: red">Running <img class="small running" src="../assets/images/loading.gif" alt="Loading" > </td>#}
                                                     <td><span class="label label-danger">Running  </span>&nbsp; &nbsp;  <i class="fa fa-spinner fa-spin" style="font-size:24px"></i></td>
                                                     <td><button type="button" class="btn btn-outline-danger" data-user-id="{{ order.getUserId() }}" data-orderid="{{ order.id }}" id="stop">Stop</button></td>
-
+                                                {% elseif order.getisActive() == '2' %}
+                                                    <td><span class="label label-warning">Stopped  </span>&nbsp;</td>
+                                                    <td><button type="button" class="btn btn-outline-warning" data-user-id="{{ order.getUserId() }}" data-orderid="{{ order.id }}" id="resume">Resume</button></td>
                                                 {% else %}
                                                     {#<td style="color: green"><b>Done</b></td>#}
                                                     <td><span class="label label-success">Done</span></td>

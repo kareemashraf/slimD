@@ -37,7 +37,7 @@ class AjaxController extends Controller
             $campaign = $entityManager->getRepository(History::class)->findOneById($id);
 
 
-            $campaign->setIsActive('0'); // set send to False
+            $campaign->setIsActive('2'); // set send to stop
             $entityManager->persist($campaign);
             $entityManager->flush();
 
@@ -48,6 +48,31 @@ class AjaxController extends Controller
 
     }
 
+    /**
+     * @Route("/ajax/resume")
+     */
+    public function resume_campaign(Request $request)
+    {
+
+        $userid = $request->request->get("userid");
+        $id = $request->request->get("id");
+        $usr = $this->get('security.token_storage')->getToken()->getUser();
+
+        if ($usr->getId() == $userid) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $campaign = $entityManager->getRepository(History::class)->findOneById($id);
+
+
+            $campaign->setIsActive('1'); // set send to stop
+            $entityManager->persist($campaign);
+            $entityManager->flush();
+
+            return new Response();
+        } else {
+            return false; //todo return false in v 2.0
+        }
+
+    }
 
     /**
      * @Route("/ajax/unsubscribe")

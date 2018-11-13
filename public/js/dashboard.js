@@ -202,6 +202,51 @@ function dashboard(data) {
         }
         
     });
+
+
+    var max = Math.max.apply(Math,clicked)+2 ;
+    var months = formatDateArray(data[3]["Timestamps"]);
+    // ==============================================================
+    // clicks Tracking https://gionkunz.github.io/chartist-js/
+    // ==============================================================
+    new Chartist.Line('#clicks-overview2', {
+        labels: months.reverse()
+        , series: [
+            {meta:"Clicks", data: clicked.reverse()}
+        ]
+    }, {
+        low: 0
+        , high:max
+        , showArea: true
+        , divisor: 10
+        , lineSmooth:true
+        , fullWidth: true
+        , showLine: true
+        , chartPadding: 30
+        , axisX: {
+            showLabel: true
+            , showGrid: true
+            , offset: 50
+        }
+        , plugins: [
+            Chartist.plugins.tooltip()
+        ],
+        // As this is axis specific we need to tell Chartist to use whole numbers only on the concerned axis
+        axisY: {
+            onlyInteger: true
+            , showLabel: true
+            , scaleMinSpace: 50
+            , showGrid: true
+            , offset: 10,
+            labelInterpolationFnc: function(value) {
+                return (value / 1)
+            },
+
+        }
+
+    });
+
+
      // ============================================================== 
     // Tracker Donut chart
     // ============================================================== 

@@ -166,11 +166,11 @@ function dashboard(data) {
     // ============================================================== 
     // Opened Email Tracking https://gionkunz.github.io/chartist-js/
     // ============================================================== 
-     new Chartist.Line('#sales-overview2', {
+    var chart =  new Chartist.Line('#opens-overview', {
         labels: month.reverse()
         , series: [
-          {meta:"Opened Emails", data: opened.reverse()}
-      ]
+            {meta:"Opened", data: opened.reverse()}
+        ]
     }, {
         low: 0
         , high:max
@@ -186,21 +186,35 @@ function dashboard(data) {
             , offset: 50
         }
         , plugins: [
-        	Chartist.plugins.tooltip()
-      	], 
-      	// As this is axis specific we need to tell Chartist to use whole numbers only on the concerned axis
+            Chartist.plugins.tooltip()
+        ],
+        // As this is axis specific we need to tell Chartist to use whole numbers only on the concerned axis
         axisY: {
-        	onlyInteger: true
+            onlyInteger: true
             , showLabel: true
-            , scaleMinSpace: 50 
+            , scaleMinSpace: 50
             , showGrid: true
             , offset: 10,
             labelInterpolationFnc: function(value) {
-		      return (value / 1)
-		    },
+                return (value / 1)
+            },
 
         }
-        
+
+    });
+    //animation
+    chart.on('draw', function(data) {
+        if(data.type === 'line' || data.type === 'area') {
+            data.element.animate({
+                d: {
+                    begin: 2000 * data.index,
+                    dur: 2000,
+                    from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                    to: data.path.clone().stringify(),
+                    easing: Chartist.Svg.Easing.easeOutQuint
+                }
+            });
+        }
     });
 
 
@@ -209,7 +223,7 @@ function dashboard(data) {
     // ==============================================================
     // clicks Tracking https://gionkunz.github.io/chartist-js/
     // ==============================================================
-    new Chartist.Line('#clicks-overview2', {
+   var chart = new Chartist.Line('#clicks-overview2', {
         labels: months.reverse()
         , series: [
             {meta:"Clicks", data: clicked.reverse()}
@@ -244,6 +258,20 @@ function dashboard(data) {
 
         }
 
+    });
+    //animation
+    chart.on('draw', function(data) {
+        if(data.type === 'line' || data.type === 'area') {
+            data.element.animate({
+                d: {
+                    begin: 2000 * data.index,
+                    dur: 2000,
+                    from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                    to: data.path.clone().stringify(),
+                    easing: Chartist.Svg.Easing.easeOutQuint
+                }
+            });
+        }
     });
 
 
@@ -371,6 +399,20 @@ function dashboard(data) {
                 });
             });
 
+            //animation
+            chart.on('draw', function(data) {
+                if(data.type === 'line' || data.type === 'area') {
+                    data.element.animate({
+                        d: {
+                            begin: 2000 * data.index,
+                            dur: 2000,
+                            from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                            to: data.path.clone().stringify(),
+                            easing: Chartist.Svg.Easing.easeOutQuint
+                        }
+                    });
+                }
+            });
 
             // ==============================================================
             // End the Sent/opened Comparison in Ajax
